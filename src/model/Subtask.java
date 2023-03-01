@@ -1,7 +1,7 @@
 package model;
 
 public class Subtask extends Task {
-    Epic epic;
+    private Epic epic;
 
     public Subtask(String name, String description, Epic epic, Status subtaskStatus) {
         super(name, description, subtaskStatus);

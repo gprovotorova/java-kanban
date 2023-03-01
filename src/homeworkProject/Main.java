@@ -14,11 +14,13 @@ public class Main {
         Manager manager = new Manager();
 
         //Создание задачи 1
-        Task task = manager.createNewTask(new Task("Покупка подарка", "Купить и упаковать подарок подруге", Status.NEW));
-        System.out.println("Create task: " + task);
+        int taskID = manager.addNewTask(new Task("Покупка подарка", "Купить и упаковать подарок подруге", Status.NEW));
+        System.out.println("Create new task: " + taskID);
+        System.out.println("Information about task: " + manager.getTask(taskID).toString());
+
 
         //Получение по идентификатору
-        Task taskFromManager = manager.getTask(task.getID());
+        Task taskFromManager = manager.getTask(taskID);
         System.out.println("Get task: " + taskFromManager);
 
         //Обновление
@@ -26,12 +28,14 @@ public class Main {
         manager.updateTask(taskFromManager);
         System.out.println("Update task: " + taskFromManager);
 
+
         //Создание задачи 2
-        task = manager.createNewTask(new Task("Купить платье", "Купить черное длинное платье", Status.InProgress));
-        System.out.println("Create task: " + task.toString());
+        taskID = manager.addNewTask(new Task("Купить платье", "Купить черное длинное платье", Status.InProgress));
+        System.out.println("Create new task: " + taskID);
+        System.out.println("Information about task: " + manager.getTask(taskID).toString());
 
         //Получение по идентификатору
-        taskFromManager = manager.getTask(task.getID());
+        taskFromManager = manager.getTask(taskID);
         System.out.println("Get task: " + taskFromManager);
 
         //Обновление
@@ -41,32 +45,38 @@ public class Main {
 
         //Создание эпика 1
         ArrayList<Subtask> listOfSubtasks = new ArrayList<>();
-        Epic epic = manager.createNewEpic(new Epic("Подготовка вечеринки", "Вечеринка, чтобы отпраздновать день рождения", listOfSubtasks, manager.calculateEpicStatus(task.getID())));
-        Subtask subtask1 = manager.createNewSubtask(new Subtask("Выбрать тему", "...", epic, Status.NEW));
-        Subtask subtask2 = manager.createNewSubtask(new Subtask("Выбрать место", "...", epic, Status.DONE));
-        Subtask subtask3 = manager.createNewSubtask(new Subtask("Купить торт", "...", epic, Status.InProgress));
-        listOfSubtasks.add(subtask1);
-        listOfSubtasks.add(subtask2);
-        listOfSubtasks.add(subtask3);
-        epic.setSubtasks(listOfSubtasks);
-        System.out.println("Create epic: " + epic);
+
+        int epicID = manager.addNewEpic(new Epic("Подготовка вечеринки", "Вечеринка, чтобы отпраздновать " +
+                "день рождения", listOfSubtasks));
+        int subtaskID = manager.addNewSubtask(new Subtask("Выбрать тему", "...", manager.getEpic(epicID), Status.DONE));
+        listOfSubtasks.add(manager.getSubtask(subtaskID));
+        subtaskID = manager.addNewSubtask(new Subtask("Выбрать место", "...", manager.getEpic(epicID), Status.DONE));
+        listOfSubtasks.add(manager.getSubtask(subtaskID));
+        subtaskID = manager.addNewSubtask(new Subtask("Купить торт", "...", manager.getEpic(epicID), Status.DONE));
+        listOfSubtasks.add(manager.getSubtask(subtaskID));
+        manager.getEpic(epicID).setSubtasks(listOfSubtasks);
+        manager.setEpicStatus(epicID);
+        System.out.println("Create new epic: " + epicID);
+        System.out.println("Information about epic: " + manager.getEpic(epicID).toString());
 
         //Обновление подзадачи
         Epic epicFromManager = manager.getEpic(3);
-        subtask1.setDescription("Выбрать тему и цвета вечеринки");
-        manager.updateSubtask(subtask1);
+        epicFromManager.setDescription("Выбрать тему и цвета вечеринки");
+        manager.updateEpic(manager.getEpic(epicFromManager.getID()));
         System.out.println("Update epic: " + epicFromManager);
 
         //Создание эпика 2
         ArrayList<Subtask> listOfNewSubtasks = new ArrayList<>();
-        epic = manager.createNewEpic(new Epic("Торт", "Торт для дня рождения", listOfNewSubtasks, manager.calculateEpicStatus(task.getID())));
-        Subtask newSubtask = manager.createNewSubtask(new Subtask("Выбрать кондитерскую", "...", epic, Status.InProgress));
-        listOfNewSubtasks.add(newSubtask);
-        epic.setSubtasks(listOfNewSubtasks);
-        System.out.println("Create epic: " + epic);
+        epicID = manager.addNewEpic(new Epic("Торт", "Торт для дня рождения", listOfNewSubtasks));
+        subtaskID = manager.addNewSubtask(new Subtask("Выбрать кондитерскую", "...", manager.getEpic(epicID), Status.InProgress));
+        listOfNewSubtasks.add(manager.getSubtask(subtaskID));
+        manager.getEpic(epicID).setSubtasks(listOfNewSubtasks);
+        manager.setEpicStatus(epicID);
+        System.out.println("Create new epic: " + epicID);
+        System.out.println("Information about epic: " + manager.getEpic(epicID).toString());
 
         //Получение эпика по идентификатору
-        epicFromManager = manager.getEpic(epic.getID());
+        epicFromManager = manager.getEpic(epicID);
         System.out.println("Get epic: " + epicFromManager);
 
         //Получение подзадачи по идентификатору
@@ -74,9 +84,10 @@ public class Main {
         System.out.println("Get subtask: " + subtaskFromManager);
 
         //Обновление
-        epic.setDescription("Медовик");
+        epicFromManager.setDescription("Медовик");
         manager.updateEpic(epicFromManager);
         System.out.println("Update epic: " + epicFromManager);
+
 
         //Получение списка всех задач
         System.out.println("All tasks: " + manager.getAllTasks());
@@ -88,7 +99,7 @@ public class Main {
         System.out.println("All subtasks: " + manager.getAllSubtasks());
 
         //Получение всех задач одного эпика
-        epicFromManager = manager.getEpic(epic.getID());
+        epicFromManager = manager.getEpic(epicID);
         System.out.println("All subtasks of epic: " + manager.getAllSubtasksOfEpic(epicFromManager));
 
         //Удаление по идентификатору задачи

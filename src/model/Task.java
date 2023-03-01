@@ -1,13 +1,18 @@
 package model;
 
 public class Task {
-    private int ID;
-    private String name;
-    private Status status;
-    private String description;
+    protected int ID;
+    protected String name;
+    protected Status status;
+    protected String description;
 
     public Task(String name, String description, Status taskStatus) {
         status = taskStatus;
+        this.name = name;
+        this.description = description;
+    }
+
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }

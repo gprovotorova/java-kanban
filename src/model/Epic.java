@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 
 public class Epic extends Task {
-    ArrayList<Subtask> subtasks;
+    private ArrayList<Subtask> subtasks;
 
 
-    public Epic(String name, String description, ArrayList<Subtask> subtasks, Status epicStatus) {
-        super(name, description, epicStatus);
+    public Epic(String name, String description, ArrayList<Subtask> subtasks) {
+        super(name, description);
         this.subtasks = subtasks;
     }
 
@@ -19,8 +19,6 @@ public class Epic extends Task {
     public void setSubtasks(ArrayList<Subtask> subtasks) {
         this.subtasks = subtasks;
     }
-
-
 
     @Override
     public String toString() {

@@ -1,7 +1,7 @@
 package model;
 
 public class Task {
-    protected int ID;
+    protected int id;
     protected String name;
     protected Status status;
     protected String description;
@@ -17,12 +17,12 @@ public class Task {
         this.description = description;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -52,7 +52,7 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "ID=" + ID +
+                "ID=" + id +
                 ", name='" + name + '\'' +
                 ", status='" + status + '\'' +
                 ", description='" + description + '\'' +

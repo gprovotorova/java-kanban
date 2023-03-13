@@ -1,19 +1,26 @@
 package manager;
 
-import model.Status;
-import model.Task;
 import model.Epic;
+import model.Status;
 import model.Subtask;
+import model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class Manager {
-
+public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
     private final HashMap <Integer, Task> tasks = new HashMap<>();
     private final HashMap <Integer, Epic> epics = new HashMap<>();
     private final HashMap <Integer, Subtask> subtasks = new HashMap<>();
+
+    private static HistoryManager memoryHistoryManager;
+    //= Managers.getDefaultHistory();
+
+    public InMemoryTaskManager (HistoryManager memoryHistoryManager) {
+        this.memoryHistoryManager = memoryHistoryManager;
+    }
 
     //Генератор ID
     private int generateId(){
@@ -21,6 +28,7 @@ public class Manager {
     }
 
     //Создание задачи
+    @Override
     public int addNewTask(Task task) {
         task.setId(generateId());
         tasks.put(task.getId(), task);
@@ -28,6 +36,7 @@ public class Manager {
     }
 
     //Создание эпика
+    @Override
     public int addNewEpic(Epic epic) {
         epic.setId(generateId());
         epics.put(epic.getId(), epic);
@@ -35,6 +44,7 @@ public class Manager {
     }
 
     //Создание подзадачи
+    @Override
     public int addNewSubtask(Subtask subtask) {
         int epicId = subtask.getEpicId();
         for (int id : epics.keySet()) {
@@ -48,23 +58,46 @@ public class Manager {
     }
 
     //Получение по идентификатору
+    @Override
     public Task getTask(int id) {
-        return tasks.get(id);
+        Task task = tasks.get(id);
+        if(task == null) {
+            return null;
+        }
+        memoryHistoryManager.addTask(task);
+        return task;
     }
+
+    @Override
     public Epic getEpic(int id) {
-        return epics.get(id);
+        Epic epic = epics.get(id);
+        if(epic == null) {
+            return null;
+        }
+        memoryHistoryManager.addTask(epic);
+        return epic;
     }
+
+    @Override
     public Subtask getSubtask(int id){
-        return subtasks.get(id);
+        Subtask subtask = subtasks.get(id);
+        if(subtask == null) {
+            return null;
+        }
+        memoryHistoryManager.addTask(subtask);
+        return subtask;
     }
 
     //Обновление
+    @Override
     public void updateTask(Task task) {
         Task savedTask = tasks.get(task.getId());
         savedTask.setName(task.getName());
         savedTask.setStatus(task.getStatus());
         savedTask.setDescription(task.getDescription());
     }
+
+    @Override
     public void updateEpic(Epic epic) {
         Epic savedEpic = epics.get(epic.getId());
         savedEpic.setName(epic.getName());
@@ -72,6 +105,8 @@ public class Manager {
         epic.setStatus(savedEpic.getStatus());
         epic.setSubtasks(savedEpic.getSubtasks());
     }
+
+    @Override
     public void updateSubtask(Subtask subtask) {
         Subtask savedSubtask = subtasks.get(subtask.getId());
         Epic savedEpic = epics.get(savedSubtask.getEpicId());
@@ -82,15 +117,19 @@ public class Manager {
     }
 
     //Удаление по идентификатору
+    @Override
     public void deleteByIDTasks(int id) {
         tasks.remove(id);
         System.out.println("Delete id task " + id );
     }
+
+    @Override
     public void deleteByIDEpic(int id) {
         epics.remove(id);
         System.out.println("Delete id epic " + id );
     }
 
+    @Override
     public void deleteByIDSubtask(int id) {
         subtasks.remove(id);
         System.out.println("Delete id subtask " + id );
@@ -115,33 +154,37 @@ public class Manager {
                         savedEpic.setStatus(Status.InProgress);
                     }
                 } else if (savedSubtask.getStatus().equals(Status.NEW) && savedEpic.getStatus().equals(Status.NEW)){
-                        savedEpic.setStatus(Status.NEW);
-                    } else if(savedSubtask.getStatus().equals(Status.DONE) && savedEpic.getStatus().equals(Status.DONE)) {
-                        savedEpic.setStatus(Status.DONE);
-                    } else {
-                        savedEpic.setStatus(Status.InProgress);
-                    }
+                    savedEpic.setStatus(Status.NEW);
+                } else if(savedSubtask.getStatus().equals(Status.DONE) && savedEpic.getStatus().equals(Status.DONE)) {
+                    savedEpic.setStatus(Status.DONE);
+                } else {
+                    savedEpic.setStatus(Status.InProgress);
                 }
+
             }
+        }
         return savedEpic.getStatus();
     }
 
-
     //Удаление всех задач
+    @Override
     public void deleteAllTasks(){
         tasks.clear();
     }
 
+    @Override
     public void deleteAllEpics() {
         epics.clear();
         deleteAllSubtasks();
     }
 
+    @Override
     public void deleteAllSubtasks() {
         subtasks.clear();
     }
 
     //Получение списка всех задач
+    @Override
     public ArrayList<String> getAllTasks() {
         ArrayList<String> nameOfTasks = new ArrayList<>();
         for (int id : tasks.keySet()) {
@@ -150,6 +193,8 @@ public class Manager {
         }
         return nameOfTasks;
     }
+
+    @Override
     public ArrayList<String> getAllEpics(){
         ArrayList<String> nameOfEpics = new ArrayList<>();
         for (int id : epics.keySet()) {
@@ -159,6 +204,7 @@ public class Manager {
         return nameOfEpics;
     }
 
+    @Override
     public ArrayList<String> getAllSubtasks() {
         ArrayList<String> savedListOfSubtasks = new ArrayList<>();
         for (int id : subtasks.keySet()) {
@@ -166,6 +212,12 @@ public class Manager {
             savedListOfSubtasks.add(savedSubtask);
         }
         return savedListOfSubtasks;
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        List<Task> taskViewHistory = memoryHistoryManager.getAll();
+        return taskViewHistory;
     }
 
     public ArrayList<Subtask> getAllSubtasksOfEpic(Epic epic) {
@@ -179,5 +231,4 @@ public class Manager {
         }
         return nameOfSubtasks;
     }
-
 }

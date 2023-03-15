@@ -17,6 +17,7 @@ public class Task {
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
+        status = Status.NEW;
     }
 
     public int getId() {
@@ -54,7 +55,7 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "ID=" + id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", status='" + status + '\'' +
                 ", description='" + description + '\'' +

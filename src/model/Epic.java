@@ -8,9 +8,9 @@ public class Epic extends Task {
     protected ArrayList<Subtask> subtasks;
 
 
-    public Epic(String name, String description, ArrayList<Subtask> subtasks) {
+    public Epic(String name, String description) {
         super(name, description);
-        this.subtasks = subtasks;
+        this.subtasks = getSubtasks();
     }
 
     public ArrayList<Subtask> getSubtasks() {
@@ -24,7 +24,7 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{" +
-                "ID=" + getId() +
+                "id=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", status='" + getStatus() + '\'' +
                 ", description='" + getDescription() + '\'' +

@@ -28,9 +28,9 @@ interface TaskManager {
      void updateSubtask(Subtask subtask);
 
     //Удаление по идентификатору 
-     void deleteByIDTasks(int id);
-     void deleteByIDEpic(int id);
-     void deleteByIDSubtask(int id);
+     void deleteByIdTasks(int id);
+     void deleteByIdEpic(int id);
+     void deleteByIdSubtask(int id);
 
     //Удаление всех задач 
      void deleteAllTasks();
@@ -38,9 +38,9 @@ interface TaskManager {
      void deleteAllSubtasks();
 
     //Получение списка всех задач 
-     ArrayList<String> getAllTasks();
-     ArrayList<String> getAllEpics();
-     ArrayList<String> getAllSubtasks();
+     ArrayList<Task> getAllTasks();
+     ArrayList<Epic> getAllEpics();
+     ArrayList<Subtask> getAllSubtasks();
 
      //Отображение последних просмотренных пользователем задач
      List<Task> getHistory();

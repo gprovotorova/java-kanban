@@ -2,9 +2,9 @@ import manager.HistoryManager;
 import manager.InMemoryTaskManager;
 import manager.Managers;
 import model.Epic;
+import model.Status;
 import model.Subtask;
 import model.Task;
-import model.Status;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
 
         HistoryManager memoryHistoryManager = Managers.getDefaultHistory();
-        InMemoryTaskManager taskManager = new InMemoryTaskManager(memoryHistoryManager);
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         //Создание задачи 1
         int taskId = taskManager.addNewTask(new Task("Покупка подарка", "Купить и упаковать подарок подруге", Status.NEW));
@@ -46,16 +46,16 @@ public class Main {
         int epicId = taskManager.addNewEpic(new Epic("Подготовка вечеринки", "Вечеринка, чтобы отпраздновать " +
                 "день рождения"));
         taskManager.getEpic(epicId).setSubtasks(listOfSubtasks);
-        System.out.println("Information about epic: " + taskManager.getEpic(epicId).toString());
-        int subtaskId = taskManager.addNewSubtask(new Subtask("Выбрать тему", "...", epicId, Status.DONE));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Выбрать тему", "...", epicId, Status.IN_PROGRESS));
         listOfSubtasks.add(taskManager.getSubtask(subtaskId));
         subtaskId = taskManager.addNewSubtask(new Subtask("Выбрать место", "...", epicId, Status.NEW));
         listOfSubtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("Купить торт", "...", epicId, Status.IN_PROGRESS));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Купить торт", "...", epicId, Status.DONE));
         listOfSubtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(listOfSubtasks);
         System.out.println("Create new epic: " + epicId);
         System.out.println("Information about epic: " + taskManager.getEpic(epicId).toString());
+
 
         //Обновление подзадачи
         Epic epicFromManager = taskManager.getEpic(3);
@@ -70,6 +70,7 @@ public class Main {
         subtaskId = taskManager.addNewSubtask(new Subtask("Выбрать кондитерскую", "...", epicId, Status.IN_PROGRESS));
         listOfSubtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(listOfSubtasks);
+        taskManager.updateEpic(taskManager.getEpic(epicId));
         System.out.println("Create new epic: " + epicId);
         System.out.println("Information about epic: " + taskManager.getEpic(epicId).toString());
 
@@ -128,5 +129,7 @@ public class Main {
 
         //Получение списка всех подзадач
         System.out.println("All subtasks: " + taskManager.getAllSubtasks());
+
+
     }
 }

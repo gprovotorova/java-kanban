@@ -2,7 +2,9 @@ package manager;
 
 public class Managers {
 
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+    public static TaskManager getDefaultTaskManager() {
+        return new InMemoryTaskManager();
+    }
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }

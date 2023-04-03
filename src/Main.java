@@ -18,16 +18,16 @@ public class Main {
         int taskId = taskManager.addNewTask(new Task("Покупка подарка", "Купить и упаковать подарок подруге", Status.NEW));
         System.out.println("Create new task: " + taskId);
         System.out.println("Information about task: " + taskManager.getTask(taskId).toString());
-        
+
         //Получение по идентификатору
         Task taskFromManager = taskManager.getTask(taskId);
         System.out.println("Get task: " + taskFromManager);
-        
+
         //Обновление
         taskFromManager.setName("Подарок подруге");
         taskManager.updateTask(taskFromManager);
         System.out.println("Update task: " + taskFromManager);
-        
+
         //Создание задачи 2
         taskId = taskManager.addNewTask(new Task("Купить платье", "Купить черное длинное платье", Status.IN_PROGRESS));
         System.out.println("Create new task: " + taskId);
@@ -55,7 +55,6 @@ public class Main {
         taskManager.getEpic(epicId).setSubtasks(listOfSubtasks);
         System.out.println("Create new epic: " + epicId);
         System.out.println("Information about epic: " + taskManager.getEpic(epicId).toString());
-
 
         //Обновление подзадачи
         Epic epicFromManager = taskManager.getEpic(3);

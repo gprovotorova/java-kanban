@@ -2,86 +2,68 @@ package manager;
 
 import model.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-
-    private CustomLinkedList<Task> viewHistory = new CustomLinkedList<>();
-
+    public Node head;
+    public Node tail;
+    private HashMap <Integer, Node> viewHistory = new HashMap<>();
     public InMemoryHistoryManager() {
         this.viewHistory = viewHistory;
     }
 
     @Override
     public void addTask(Task task) {
-        viewHistory.linkLast(task);
+        Node node = viewHistory.get(task.getId());
+        linkLast(task);
+        removeNode(node);
     }
 
     @Override
     public void removeTask(int id){
-        viewHistory.remove(id);
+        Node node = viewHistory.remove(id);
+        removeNode(node);
     }
 
     @Override
     public List<Task> getAll() {
-        return viewHistory.getTasks();
+        List<Task> addedTasks = new ArrayList<>();
+        Node node = head;
+        while (node != null){
+            Task task = node.getTask();
+            addedTasks.add(task);
+            node = node.next;
+        }
+        return addedTasks;
     }
 
-    public class CustomLinkedList<T> {
-        public Node head = null;
-        public Node tail = null;
-        protected int id = 0;
-
-        public int setId(int id) {
-            return ++id;
+    public void linkLast(Task task){
+        final Node last = tail;
+        final Node newNode = new Node(last, task, null);
+        tail = newNode;
+        if(last == null){
+            head = newNode;
+        } else {
+            last.next = newNode;
         }
-
-        private LinkedList<Task> viewHistoryForWork = new LinkedList<>();
-        HashMap<Integer, Node> reviewedTask = new HashMap<>();
-
-        public void linkLast(Task task){
-            if (viewHistoryForWork.contains(task)){
-                int index = viewHistoryForWork.indexOf(task);
-                Task taskForWork = viewHistoryForWork.get(index);
-                var node = new Node(taskForWork, tail, head);
-                reviewedTask.put(setId(id), node);
-                removeNode(node);
-                remove(index);
-                viewHistoryForWork.addLast(task);
-            } else {
-                viewHistoryForWork.addLast(task);
-            }
-        }
-
-
-        public ArrayList<Task> getTasks() {
-            ArrayList<Task> addedTasks = new ArrayList<>();
-            for (int i = 0; i < viewHistoryForWork.size(); i++) {
-                addedTasks.add(i, viewHistoryForWork.get(i));
-            }
-            return addedTasks;
-        }
-
-        public void removeNode(Node node) {
-            reviewedTask.remove(node);
-            Node temp = head, prev = null;
-            Task taskForSearch = node.getTask();
-            if (temp != null && temp.task == taskForSearch) {
-                head = temp.next;
-                return;
-            }
-            while (temp != null && temp.task != taskForSearch) {
-                prev = temp;
-                temp = temp.next;
-            }
-            if (temp == null){
-                return;
-            }
-            prev.next = temp.next;
-        }
-
-        public void remove(int id) {
-            viewHistoryForWork.remove(id);
-        }
+        viewHistory.put(task.getId(), tail);
     }
+
+    public void removeNode(Node node) {
+        if(node == null){
+            return;
+        }
+        if(node.prev != null){
+            node.prev.next = node.next;
+        } else {
+            head = node.next;
+        }
+        if(node.next != null){
+            node.next.prev = node.prev;
+        }
+        viewHistory.replace(node.getTask().getId(), node, tail);
+    }
+
 }

@@ -117,16 +117,23 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление по идентификатору
     public void deleteByIdTasks(int id) {
         tasks.remove(id);
+        memoryHistoryManager.removeTask(id);
     }
 
     public void deleteByIdEpic(int id) {
         ArrayList<Subtask> subtasksInEpic = getAllSubtasksOfEpic(epics.get(id));
+        for (Subtask subtask : subtasksInEpic) {
+            memoryHistoryManager.removeTask(subtask.getId());
+        }
         subtasksInEpic.clear();
         epics.remove(id);
+        memoryHistoryManager.removeTask(id);
+
     }
 
     public void deleteByIdSubtask(int id) {
         subtasks.remove(id);
+        memoryHistoryManager.removeTask(id);
     }
 
     //Статус эпика

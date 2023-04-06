@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    public Node head;
-    public Node tail;
+    private Node head;
+    private Node tail;
     private HashMap <Integer, Node> viewHistory = new HashMap<>();
+
     public InMemoryHistoryManager() {
         this.viewHistory = viewHistory;
     }
@@ -39,7 +40,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return addedTasks;
     }
 
-    public void linkLast(Task task){
+    private void linkLast(Task task){
         final Node last = tail;
         final Node newNode = new Node(last, task, null);
         tail = newNode;

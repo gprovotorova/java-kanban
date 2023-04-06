@@ -3,7 +3,7 @@ package manager;
 import model.Task;
 
 public class Node {
-    Task task;
+    private Task task;
     public Node next;
     public Node prev;
 

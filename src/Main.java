@@ -95,6 +95,5 @@ public class Main {
 
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
-
     }
 }

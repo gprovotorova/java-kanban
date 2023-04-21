@@ -1,5 +1,7 @@
 package model;
 
+import manager.TaskType;
+
 import java.util.Objects;
 
 public class Task {
@@ -18,6 +20,10 @@ public class Task {
         this.name = name;
         this.description = description;
         status = Status.NEW;
+    }
+
+    public TaskType getType(){
+        return TaskType.TASK;
     }
 
     public int getId() {
@@ -74,4 +80,6 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id, name, status, description);
     }
+
+
 }

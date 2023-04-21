@@ -1,3 +1,4 @@
+import manager.FileBackedTasksManager;
 import manager.HistoryManager;
 import manager.InMemoryTaskManager;
 import manager.Managers;
@@ -6,6 +7,7 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Main {
@@ -51,6 +53,7 @@ public class Main {
 
         //Вызов задач, подзадач и эпика
         taskManager.getTask(1);
+
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
@@ -84,6 +87,7 @@ public class Main {
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
+
         //Удаление по идентификатору подзадачи
         taskManager.deleteByIdSubtask(6);
 
@@ -95,5 +99,6 @@ public class Main {
 
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
+
     }
 }

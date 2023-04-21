@@ -66,4 +66,14 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         viewHistory.replace(node.getTask().getId(), node, tail);
     }
+
+    public void cleanViewHistory(){
+        for (Integer i : viewHistory.keySet()) {
+            Node savedNode = viewHistory.get(i);
+            removeNode(savedNode);
+        }
+        viewHistory.clear();
+        head = null;
+        tail = null;
+    }
 }

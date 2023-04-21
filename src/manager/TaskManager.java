@@ -44,4 +44,6 @@ interface TaskManager {
 
      //Отображение последних просмотренных пользователем задач
      List<Task> getHistory();
+
+
 }

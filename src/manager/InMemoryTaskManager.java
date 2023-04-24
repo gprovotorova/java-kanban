@@ -35,7 +35,7 @@ public class InMemoryTaskManager implements TaskManager {
         return id;
     }
 
-    public void setIdInHashMap(int oldId, int newId, Task task){
+    public void changeId(int oldId, int newId, Task task){
         TaskType type = task.getType();
         switch(type){
             case TASK:

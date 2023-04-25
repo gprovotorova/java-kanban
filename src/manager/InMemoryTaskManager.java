@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
     private final HashMap <Integer, Task> tasks = new HashMap<>();
     private final HashMap <Integer, Epic> epics = new HashMap<>();
-    private final HashMap <Integer, Subtask> subtasks = new HashMap<>();
+    public final HashMap <Integer, Subtask> subtasks = new HashMap<>();
 
     private final HistoryManager memoryHistoryManager = Managers.getDefaultHistory();
 
@@ -53,7 +53,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
     }
-
 
     //Создание задачи
     @Override

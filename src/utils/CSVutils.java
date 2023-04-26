@@ -14,39 +14,39 @@ import java.util.Map;
 
 public class CSVutils {
 
-    private static String CONST = "";
+    private static String CONST = "\n";
     private static String HEADLINE = "id,type,name,status,description,epic\n";
     private static final String COMMA = ", ";
     private static FileBackedTasksManager fileManager;
     private static InMemoryHistoryManager historyManager;
-    private File file;
 
-    public CSVutils(File file, FileBackedTasksManager fileManager, InMemoryHistoryManager historyManager) {
-        this.file = file;
+
+    public CSVutils(FileBackedTasksManager fileManager, InMemoryHistoryManager historyManager) {
         this.fileManager = fileManager;
         this.historyManager = historyManager;
     }
 
-    public void save() {
+    public static void save() {
         try (Writer fileWriter = new FileWriter("history.csv");){
             fileWriter.write(HEADLINE);
             Map<Integer, Task> savedTasks = fileManager.mergeAllTasks();
             for (Integer key : savedTasks.keySet()) {
                 Task task = savedTasks.get(key);
-                fileWriter.write(toString(task) + "\n");
+                fileWriter.write(toString(task) + CONST);
             }
-            fileWriter.write("\n");
+            fileWriter.write(CONST);
             fileWriter.write(historyToString(historyManager));
         } catch (IOException e) {
             throw new ManagerSaveException("Произошла ошибка во время записи файла.");
         }
     }
 
-    private String toString(Task task){
+    public static String toString(Task task){
+        String line = "";
         if(task.getType().equals(TaskType.SUBTASK)){
             int id = task.getId();
             Subtask subtask = fileManager.subtasks.get(id);
-            CONST = String.format("%s, %s, %s, %s, %s, %s",
+            line = String.format("%s, %s, %s, %s, %s, %s",
                     task.getId(),
                     task.getType(),
                     task.getName(),
@@ -54,17 +54,17 @@ public class CSVutils {
                     task.getDescription(),
                     subtask.getEpicId());
         } else {
-            CONST = String.format("%s, %s, %s, %s, %s",
+            line = String.format("%s, %s, %s, %s, %s",
                     task.getId(),
                     task.getType(),
                     task.getName(),
                     task.getStatus(),
                     task.getDescription());
         }
-        return CONST;
+        return line;
     }
 
-    public Task fromString(String line){
+    public static Task fromString(String line){
         String [] array = line.split(COMMA);
         String taskType = array[1];
         switch(taskType){
@@ -122,7 +122,7 @@ public class CSVutils {
         return history;
     }
 
-    public void reloadHistory(List<Integer> savedId){
+    public static void reloadHistory(List<Integer> savedId){
         List <Task> savedTasks = new ArrayList<>();
         for (int i = 0; i < savedId.size(); i++){
             int id = savedId.get(i);

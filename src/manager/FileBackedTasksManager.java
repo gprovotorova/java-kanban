@@ -16,14 +16,15 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
 
-    private static File file;
+    private File file;
     private static InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
     private static FileBackedTasksManager manager = new FileBackedTasksManager(new File("history.csv"));
-    private static CSVutils CSVutil = new CSVutils(file, manager, historyManager);
+    private static final CSVutils CSVutil = new CSVutils(manager, historyManager);
 
     public FileBackedTasksManager(File file) {
         this.file = file;
     }
+
     public static FileBackedTasksManager loadFromFile(File file){
         List<String> info = new ArrayList<>();
         FileBackedTasksManager manager = new FileBackedTasksManager(file);
@@ -216,27 +217,27 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     public static void main(String[] args) {
 
         FileBackedTasksManager manager = new FileBackedTasksManager(new File("history.csv"));
-        CSVutils CSVutil = new CSVutils(file, manager, historyManager);
+        CSVutils CSVutil = new CSVutils(manager, historyManager);
 
         manager.addNewTask(new Task("TASK 1", "...", Status.NEW));
         manager.addNewTask(new Task("TASK 2", "...", Status.NEW));
 
         //Создание эпика 1
-        ArrayList<Subtask> listOfSubtasks = new ArrayList<>();
+        ArrayList<Subtask> subtasksOfEpic = new ArrayList<>();
         int epicId = manager.addNewEpic(new Epic("EPIC 1", "..."));
-        manager.getEpic(epicId).setSubtasks(listOfSubtasks);
+        manager.getEpic(epicId).setSubtasks(subtasksOfEpic);
         int subtaskId = manager.addNewSubtask(new Subtask("SUBTASK 1", "...", epicId, Status.IN_PROGRESS));
-        listOfSubtasks.add(manager.getSubtask(subtaskId));
+        subtasksOfEpic.add(manager.getSubtask(subtaskId));
         subtaskId = manager.addNewSubtask(new Subtask("SUBTASK 2", "...", epicId, Status.NEW));
-        listOfSubtasks.add(manager.getSubtask(subtaskId));
+        subtasksOfEpic.add(manager.getSubtask(subtaskId));
         subtaskId = manager.addNewSubtask(new Subtask("SUBTASK 3", "...", epicId, Status.DONE));
-        listOfSubtasks.add(manager.getSubtask(subtaskId));
-        manager.getEpic(epicId).setSubtasks(listOfSubtasks);
+        subtasksOfEpic.add(manager.getSubtask(subtaskId));
+        manager.getEpic(epicId).setSubtasks(subtasksOfEpic);
 
         //Создание эпика 2
-        listOfSubtasks = new ArrayList<>();
+        subtasksOfEpic = new ArrayList<>();
         epicId = manager.addNewEpic(new Epic("EPIC 2", "..."));
-        manager.getEpic(epicId).setSubtasks(listOfSubtasks);
+        manager.getEpic(epicId).setSubtasks(subtasksOfEpic);
 
         //Вызов задач, подзадач и эпика
         System.out.println(manager.getTask(1));

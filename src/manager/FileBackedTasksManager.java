@@ -17,12 +17,17 @@ import java.util.List;
 public class FileBackedTasksManager extends InMemoryTaskManager{
 
     private File file;
-    private static InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-    private static FileBackedTasksManager manager = new FileBackedTasksManager(new File("history.csv"));
-    private static final CSVutils CSVutil = new CSVutils(manager, historyManager);
 
     public FileBackedTasksManager(File file) {
         this.file = file;
+    }
+    
+    public FileBackedTasksManager getFileManager(){
+        return FileBackedTasksManager.this;
+    }
+
+    public String getFileName(){
+        return file.getName();
     }
 
     public static FileBackedTasksManager loadFromFile(File file){
@@ -40,10 +45,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
             String history = info.get(index);
             info.remove(index);
             for(String line : info){
-                CSVutil.fromString(line);
+                CSVutils.fromString(line, manager);
             }
-            List <Integer> loadHistory = CSVutil.historyFromString(history);
-            CSVutil.reloadHistory(loadHistory);
+            List <Integer> loadHistory = CSVutils.historyFromString(history);
+            CSVutils.reloadHistory(loadHistory, manager);
         } catch (IOException e) {
             throw new ManagerSaveException("Произошла ошибка во время чтения файла.");
         }
@@ -64,136 +69,127 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     @Override
     public int addNewTask(Task task){
         super.addNewTask(task);
-        historyManager.addTask(task);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
         return task.getId();
     }
 
     @Override
     public int addNewEpic(Epic epic){
         super.addNewEpic(epic);
-        historyManager.addTask(epic);
-        CSVutil.save();
+        //historyManager.addTask(epic);
+        CSVutils.save(getFileManager());
         return epic.getId();
     }
 
     @Override
     public int addNewSubtask(Subtask subtask){
         super.addNewSubtask(subtask);
-        historyManager.addTask(subtask);
-        CSVutil.save();
+        //historyManager.addTask(subtask);
+        CSVutils.save(getFileManager());
         return subtask.getId();
     }
 
     @Override
     public Task getTask(int id){
         Task task = super.getTask(id);
-        historyManager.addTask(task);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
         return task;
     }
 
     @Override
     public Epic getEpic(int id){
         Epic epic = super.getEpic(id);
-        historyManager.addTask(epic);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
         return epic;
     }
+
     @Override
     public Subtask getSubtask(int id){
         Subtask subtask = super.getSubtask(id);
-        historyManager.addTask(subtask);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
         return subtask;
     }
 
     @Override
     public void updateTask(Task task){
         super.updateTask(task);
-        historyManager.addTask(task);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
 
     @Override
     public void updateEpic(Epic epic){
         super.updateEpic(epic);
-        historyManager.addTask(epic);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
 
     @Override
     public void updateSubtask(Subtask subtask){
         super.updateSubtask(subtask);
-        historyManager.addTask(subtask);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
 
     @Override
     public void deleteByIdTasks(int id){
         super.deleteByIdTasks(id);
-        historyManager.removeTask(id);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
+
     @Override
     public void deleteByIdEpic(int id){
         ArrayList<Subtask> subtasksInEpic = super.getAllSubtasksOfEpic(super.getEpic(id));
         for (Subtask subtask : subtasksInEpic) {
-            historyManager.removeTask(subtask.getId());
             super.deleteByIdSubtask(subtask.getId());
         }
         super.deleteByIdEpic(id);
-        historyManager.removeTask(id);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
     @Override
     public void deleteByIdSubtask(int id){
         super.deleteByIdSubtask(id);
-        historyManager.removeTask(id);
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
 
     @Override
     public void deleteAllTasks(){
         super.deleteAllTasks();
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
     @Override
     public void deleteAllEpics(){
         super.deleteAllEpics();
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
 
     @Override
     public void deleteAllSubtasks(){
         super.deleteAllSubtasks();
-        CSVutil.save();
+        CSVutils.save(getFileManager());
     }
 
     @Override
     public ArrayList<Task> getAllTasks(){
         ArrayList tasks = super.getAllTasks();
-        CSVutil.save();
+        CSVutils.save(getFileManager());
         return tasks;
     }
     @Override
     public ArrayList<Epic> getAllEpics(){
         ArrayList epics = super.getAllEpics();
-        CSVutil.save();
+        CSVutils.save(getFileManager());
         return epics;
     }
 
     @Override
     public ArrayList<Subtask> getAllSubtasks(){
         ArrayList subtasks = super.getAllSubtasks();
-        CSVutil.save();
+        CSVutils.save(getFileManager());
         return subtasks;
     }
 
     @Override
     public List<Task> getHistory() {
         List history = super.getHistory();
-        CSVutil.historyToString(historyManager);
+        CSVutils.historyToString(this.memoryHistoryManager);
         return history;
     }
 
@@ -217,7 +213,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     public static void main(String[] args) {
 
         FileBackedTasksManager manager = new FileBackedTasksManager(new File("history.csv"));
-        CSVutils CSVutil = new CSVutils(manager, historyManager);
 
         manager.addNewTask(new Task("TASK 1", "...", Status.NEW));
         manager.addNewTask(new Task("TASK 2", "...", Status.NEW));
@@ -250,11 +245,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
         FileBackedTasksManager manager2 = loadFromFile(new File("history.csv"));
 
-        System.out.println(manager.getEpic(3));
-        System.out.println(manager.getTask(1));
-        System.out.println(manager.getSubtask(6));
-        System.out.println(manager.getSubtask(4));
+        System.out.println(manager2.getEpic(3));
+        System.out.println(manager2.getTask(1));
+        System.out.println(manager2.getSubtask(6));
+        System.out.println(manager2.getSubtask(4));
 
-        manager2.CSVutil.save();
+        CSVutils.save(manager2);
     }
 }

@@ -8,6 +8,8 @@ import model.Subtask;
 import model.Task;
 
 import java.io.*;
+import java.time.Instant;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,7 @@ public class CSVutils {
 
     private static final String COMMA = ", ";
     private static final String CONST = "\n";
-    private static final String HEADLINE = "id,type,name,status,description,epic\n";
+    private static final String HEADLINE = "id,type,name,status,description,epic,startTime,duration,endTime\n";
 
     public static void save(FileBackedTasksManager fileManager) {
         try (Writer fileWriter = new FileWriter(fileManager.getFileName())){
@@ -38,20 +40,27 @@ public class CSVutils {
         if(task.getType().equals(TaskType.SUBTASK)){
             int id = task.getId();
             Subtask subtask = fileManager.subtasks.get(id);
-            line = String.format("%s, %s, %s, %s, %s, %s",
-                    task.getId(),
-                    task.getType(),
-                    task.getName(),
-                    task.getStatus(),
-                    task.getDescription(),
-                    subtask.getEpicId());
+            line = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s",
+                    task.getId(), //0
+                    task.getType(), //1
+                    task.getName(), //2
+                    task.getStatus(), //3
+                    task.getDescription(), //4
+                    subtask.getEpicId(), //5
+                    task.getStartTime().toString(), //6
+                    task.getDuration(), //7
+                    task.getEndTime().toString()); //8
         } else {
-            line = String.format("%s, %s, %s, %s, %s",
-                    task.getId(),
-                    task.getType(),
-                    task.getName(),
-                    task.getStatus(),
-                    task.getDescription());
+            line = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s",
+                    task.getId(), //0
+                    task.getType(), //1
+                    task.getName(), //2
+                    task.getStatus(), //3
+                    task.getDescription(), //4
+                    0,
+                    task.getStartTime().toString(), //5
+                    task.getDuration(), //6
+                    task.getEndTime().toString()); //7
         }
         return line;
     }
@@ -61,7 +70,7 @@ public class CSVutils {
         String taskType = array[1];
         switch(taskType){
             case "TASK":
-                int taskId = manager.addNewTask(new Task(array[2], array[4], Status.valueOf(array[3])));
+                int taskId = manager.addNewTask(new Task(array[2], array[4], Status.valueOf(array[3]), Long.parseLong(String.valueOf(Instant.parse(array[6]).toEpochMilli()/1000)), Long.parseLong(array[7])));
                 int newId = Integer.parseInt(array[0]);
                 Task task = manager.getTask(taskId);
                 if(taskId != newId){
@@ -71,7 +80,7 @@ public class CSVutils {
                 return task;
 
             case "SUBTASK":
-                int subtaskId = manager.addNewSubtask(new Subtask(array[2], array[4], Integer.parseInt(array[5]), Status.valueOf(array[3])));
+                int subtaskId = manager.addNewSubtask(new Subtask(array[2], array[4], Integer.parseInt(array[5]), Status.valueOf(array[3]), Long.parseLong(String.valueOf(Instant.parse(array[6]).toEpochMilli()/1000)), Long.parseLong(array[7])));
                 int epicId = Integer.parseInt(array[5]);
                 ArrayList<Subtask> listOfSubtasks = manager.getSubtasks(epicId);
                 manager.getEpic(epicId).setSubtasks(listOfSubtasks);
@@ -81,6 +90,7 @@ public class CSVutils {
                     subtask.setId(newId);
                     manager.changeId(subtaskId, newId, subtask);
                 }
+                manager.getEpic(epicId).countEpicTime();
                 return subtask;
             case "EPIC":
                 epicId = manager.addNewEpic(new Epic(array[2], array[4]));
@@ -90,6 +100,7 @@ public class CSVutils {
                     epic.setId(newId);
                     manager.changeId(epicId, newId, epic);
                 }
+                epic.countEpicTime();
                 return epic;
             default:
                 throw new ManagerSaveException("Произошла ошибка: не найден тип задачи.");

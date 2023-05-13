@@ -2,14 +2,21 @@ package model;
 
 import manager.TaskType;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Subtask extends Task {
     protected int epicId;
 
-    public Subtask(String name, String description, int epicId, Status subtaskStatus) {
-        super(name, description, subtaskStatus);
+    public Subtask(String name, String description, int epicId, Status subtaskStatus, Long startTimeIncome, Long duration) {
+        super(name, description, subtaskStatus, startTimeIncome, duration);
         this.epicId = epicId;
+        this.endTime = getEndTime();
+    }
+
+    public Instant getEndTime() {
+        return startTime.plus(duration, ChronoUnit.MILLIS);
     }
 
     public TaskType getType(){
@@ -28,6 +35,9 @@ public class Subtask extends Task {
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                ", endTime=" + endTime +
                 '}';
     }
 

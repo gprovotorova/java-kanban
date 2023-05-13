@@ -76,7 +76,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     @Override
     public int addNewEpic(Epic epic){
         super.addNewEpic(epic);
-        //historyManager.addTask(epic);
         CSVutils.save(getFileManager());
         return epic.getId();
     }
@@ -84,7 +83,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     @Override
     public int addNewSubtask(Subtask subtask){
         super.addNewSubtask(subtask);
-        //historyManager.addTask(subtask);
         CSVutils.save(getFileManager());
         return subtask.getId();
     }
@@ -129,8 +127,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     }
 
     @Override
-    public void deleteByIdTasks(int id){
-        super.deleteByIdTasks(id);
+    public void deleteByIdTask(int id){
+        super.deleteByIdTask(id);
         CSVutils.save(getFileManager());
     }
 
@@ -214,25 +212,28 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
         FileBackedTasksManager manager = new FileBackedTasksManager(new File("history.csv"));
 
-        manager.addNewTask(new Task("TASK 1", "...", Status.NEW));
-        manager.addNewTask(new Task("TASK 2", "...", Status.NEW));
+        int taskId1 = manager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
+        int taskId2 = manager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
 
-        //Создание эпика 1
-        ArrayList<Subtask> subtasksOfEpic = new ArrayList<>();
-        int epicId = manager.addNewEpic(new Epic("EPIC 1", "..."));
-        manager.getEpic(epicId).setSubtasks(subtasksOfEpic);
-        int subtaskId = manager.addNewSubtask(new Subtask("SUBTASK 1", "...", epicId, Status.IN_PROGRESS));
-        subtasksOfEpic.add(manager.getSubtask(subtaskId));
-        subtaskId = manager.addNewSubtask(new Subtask("SUBTASK 2", "...", epicId, Status.NEW));
-        subtasksOfEpic.add(manager.getSubtask(subtaskId));
-        subtaskId = manager.addNewSubtask(new Subtask("SUBTASK 3", "...", epicId, Status.DONE));
-        subtasksOfEpic.add(manager.getSubtask(subtaskId));
-        manager.getEpic(epicId).setSubtasks(subtasksOfEpic);
+        ArrayList<Subtask> subtasks = new ArrayList<>();
+        int epicId = manager.addNewEpic(new Epic("...", "..."));
+        manager.getEpic(epicId).setSubtasks(subtasks);
+        int subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1683166053L, 172800L));
+        subtasks.add(manager.getSubtask(subtaskId));
+        subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW, 1682906853L, 43200L));
+        subtasks.add(manager.getSubtask(subtaskId));
+        subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1683029253L, 86400L));
+        subtasks.add(manager.getSubtask(subtaskId));
+        manager.getEpic(epicId).setSubtasks(subtasks);
+        manager.getEpic(epicId).countEpicTime();
 
-        //Создание эпика 2
-        subtasksOfEpic = new ArrayList<>();
+        subtasks = new ArrayList<>();
         epicId = manager.addNewEpic(new Epic("EPIC 2", "..."));
-        manager.getEpic(epicId).setSubtasks(subtasksOfEpic);
+        manager.getEpic(epicId).setSubtasks(subtasks);
+        subtaskId = manager.addNewSubtask(new Subtask("SUBTASK 4", "...", epicId, Status.DONE, 1684029700L, 67000L));
+        subtasks.add(manager.getSubtask(subtaskId));
+        manager.getEpic(epicId).setSubtasks(subtasks);
+        manager.getEpic(epicId).countEpicTime();
 
         //Вызов задач, подзадач и эпика
         System.out.println(manager.getTask(1));

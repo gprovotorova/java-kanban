@@ -2,6 +2,8 @@ package model;
 
 import manager.TaskType;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Task {
@@ -9,11 +11,17 @@ public class Task {
     protected String name;
     protected Status status;
     protected String description;
+    protected Instant startTime;
+    protected Long duration; //минуты
+    protected Instant endTime;
 
-    public Task(String name, String description, Status taskStatus) {
+    public Task(String name, String description, Status taskStatus, Long startTimeIncome, Long duration) {
         status = taskStatus;
         this.name = name;
         this.description = description;
+        this.startTime = Instant.ofEpochSecond(startTimeIncome);
+        this.duration = duration;
+        this.endTime = getEndTime();
     }
 
     public Task(String name, String description) {
@@ -58,13 +66,28 @@ public class Task {
         this.description = description;
     }
 
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+
+    public Instant getEndTime() {
+        return startTime.plus(duration, ChronoUnit.MILLIS);
+    }
+
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                ", endTime=" + endTime +
                 '}';
     }
 
@@ -80,6 +103,7 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id, name, status, description);
     }
+
 
 
 }

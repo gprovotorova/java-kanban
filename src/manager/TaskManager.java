@@ -7,7 +7,7 @@ import model.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-interface TaskManager {
+public interface TaskManager {
 
     //Создание задачи
     int addNewTask(Task task);
@@ -15,35 +15,37 @@ interface TaskManager {
     //Создание эпика
     int addNewEpic(Epic epic);
     //Создание подзадачи
-     int addNewSubtask(Subtask subtask);
+    int addNewSubtask(Subtask subtask);
 
     //Получение по идентификатору 
-     Task getTask(int id);
-     Epic getEpic(int id);
-     Subtask getSubtask(int id);
+    Task getTask(int id);
+    Epic getEpic(int id);
+    Subtask getSubtask(int id);
 
     //Обновление 
-     void updateTask(Task task);
-     void updateEpic(Epic epic);
-     void updateSubtask(Subtask subtask);
+    void updateTask(Task task);
+    void updateEpic(Epic epic);
+    void updateSubtask(Subtask subtask);
 
     //Удаление по идентификатору 
-     void deleteByIdTasks(int id);
-     void deleteByIdEpic(int id);
-     void deleteByIdSubtask(int id);
+    void deleteByIdTask(int id);
+    void deleteByIdEpic(int id);
+    void deleteByIdSubtask(int id);
 
     //Удаление всех задач 
-     void deleteAllTasks();
-     void deleteAllEpics();
-     void deleteAllSubtasks();
+    void deleteAllTasks();
+    void deleteAllEpics();
+    void deleteAllSubtasks();
 
     //Получение списка всех задач 
-     ArrayList<Task> getAllTasks();
-     ArrayList<Epic> getAllEpics();
-     ArrayList<Subtask> getAllSubtasks();
+    ArrayList<Task> getAllTasks();
+    ArrayList<Epic> getAllEpics();
+    ArrayList<Subtask> getAllSubtasks();
 
      //Отображение последних просмотренных пользователем задач
      List<Task> getHistory();
-
-
+     //Возвращение всех подзадач конкретного эпика
+     ArrayList<Subtask> getAllSubtasksOfEpic(Epic epic);
+     //Определение статуса эпика
+     void setEpicStatus(int epicId);
 }

@@ -1,4 +1,3 @@
-import manager.FileBackedTasksManager;
 import manager.HistoryManager;
 import manager.InMemoryTaskManager;
 import manager.Managers;
@@ -7,7 +6,6 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class Main {
@@ -17,39 +15,47 @@ public class Main {
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         //Создание задачи 1
-        int taskId = taskManager.addNewTask(new Task("...", "...", Status.NEW));
+        int taskId = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
         System.out.println("Create new task: " + taskId);
         System.out.println("Information about task: " + taskManager.getTask(taskId).toString());
 
         //Создание задачи 2
-        taskId = taskManager.addNewTask(new Task("...", "...", Status.NEW));
+        taskId = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
         System.out.println("Create new task: " + taskId);
         System.out.println("Information about task: " + taskManager.getTask(taskId).toString());
 
         //Создание эпика 1
-        ArrayList<Subtask> listOfSubtasks = new ArrayList<>();
+        ArrayList<Subtask> subtasks = new ArrayList<>();
         int epicId = taskManager.addNewEpic(new Epic("...", "..."));
-        taskManager.getEpic(epicId).setSubtasks(listOfSubtasks);
-        int subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS));
-        listOfSubtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW));
-        listOfSubtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE));
-        listOfSubtasks.add(taskManager.getSubtask(subtaskId));
-        taskManager.getEpic(epicId).setSubtasks(listOfSubtasks);
+        taskManager.getEpic(epicId).setSubtasks(subtasks);
+        int subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1683166053L, 172800L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW, 1682906853L, 43200L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1683029253L, 86400L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        taskManager.getEpic(epicId).setSubtasks(subtasks);
+        taskManager.getEpic(epicId).countEpicTime();
         System.out.println("Create new epic: " + epicId);
         System.out.println("Information about epic: " + taskManager.getEpic(epicId).toString());
 
 
         //Создание эпика 2
-        listOfSubtasks = new ArrayList<>();
+        subtasks = new ArrayList<>();
         epicId = taskManager.addNewEpic(new Epic("...", "..."));
-        taskManager.getEpic(epicId).setSubtasks(listOfSubtasks);
+        taskManager.getEpic(epicId).setSubtasks(subtasks);
+        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1677931200L, 43200L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        taskManager.getEpic(epicId).setSubtasks(subtasks);
+        taskManager.getEpic(epicId).countEpicTime();
         System.out.println("Create new epic: " + epicId);
         System.out.println("Information about epic: " + taskManager.getEpic(epicId).toString());
 
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
+
+        //Вывод задач в порядке приоритета
+        System.out.println("Priority history: " + taskManager.getPrioritizedTasks());
 
         //Вызов задач, подзадач и эпика
         taskManager.getTask(1);
@@ -62,31 +68,35 @@ public class Main {
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
         taskManager.getTask(2);
+
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
         taskManager.getSubtask(4);
+
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
         taskManager.getTask(1);
+
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
         taskManager.getEpic(3);
+
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
         taskManager.getSubtask(6);
+
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
         //Удаление по идентификатору задачи
-        taskManager.deleteByIdTasks(1);
+        taskManager.deleteByIdTask(1);
 
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
-
 
         //Удаление по идентификатору подзадачи
         taskManager.deleteByIdSubtask(6);
@@ -100,5 +110,7 @@ public class Main {
         // Просмотр истории
         System.out.println("Your viewing history:" + taskManager.getHistory().toString());
 
+        //Вывод задач в порядке приоритета
+        System.out.println("Priority history: " + taskManager.getPrioritizedTasks());
     }
 }

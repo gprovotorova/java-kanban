@@ -9,7 +9,6 @@ import model.Task;
 
 import java.io.*;
 import java.time.Instant;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +81,7 @@ public class CSVutils {
             case "SUBTASK":
                 int subtaskId = manager.addNewSubtask(new Subtask(array[2], array[4], Integer.parseInt(array[5]), Status.valueOf(array[3]), Long.parseLong(String.valueOf(Instant.parse(array[6]).toEpochMilli()/1000)), Long.parseLong(array[7])));
                 int epicId = Integer.parseInt(array[5]);
-                ArrayList<Subtask> listOfSubtasks = manager.getSubtasks(epicId);
+                List<Subtask> listOfSubtasks = manager.getSubtasks(epicId);
                 manager.getEpic(epicId).setSubtasks(listOfSubtasks);
                 newId = Integer.parseInt(array[0]);
                 Subtask subtask = manager.getSubtask(subtaskId);

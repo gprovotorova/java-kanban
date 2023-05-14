@@ -12,16 +12,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest <T extends HistoryManager>{
-    InMemoryTaskManager taskManager;
+    private InMemoryTaskManager taskManager;
 
     @BeforeEach
     public void BeforeEach(){
         taskManager = new InMemoryTaskManager();
-        int taskId1 = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
-        int taskId2 = taskManager.addNewTask(new Task("...", "...", Status.DONE, 1683425253L, 129600L));
-        int taskId3 = taskManager.addNewTask(new Task("...", "...", Status.IN_PROGRESS, 1683166053L, 172800L));
-        int taskId4 = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682906853L, 43200L));
-        int taskId5 = taskManager.addNewTask(new Task("...", "...", Status.DONE, 1683029253L, 86400L));
+        taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
+        taskManager.addNewTask(new Task("...", "...", Status.DONE, 1683425253L, 129600L));
+        taskManager.addNewTask(new Task("...", "...", Status.IN_PROGRESS, 1683166053L, 172800L));
+        taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682906853L, 43200L));
+        taskManager.addNewTask(new Task("...", "...", Status.DONE, 1683029253L, 86400L));
     }
 
     @Test

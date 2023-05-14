@@ -1,6 +1,4 @@
-import manager.HistoryManager;
 import manager.InMemoryTaskManager;
-import manager.Managers;
 import model.Epic;
 import model.Status;
 import model.Subtask;
@@ -11,7 +9,6 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
 
-        HistoryManager memoryHistoryManager = Managers.getDefaultHistory();
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         //Создание задачи 1

@@ -11,8 +11,8 @@ import java.io.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
 
@@ -55,9 +55,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         return manager;
     }
 
-    public ArrayList<Subtask> getSubtasks(int epicId){
-        ArrayList<Subtask> subtasks = super.getAllSubtasks();
-        ArrayList <Subtask> epicSubtasks = new ArrayList<>();
+    public List<Subtask> getSubtasks(int epicId){
+        List<Subtask> subtasks = super.getAllSubtasks();
+        List <Subtask> epicSubtasks = new ArrayList<>();
         for (Subtask subtask : subtasks) {
             if(subtask.getEpicId() == epicId){
                 epicSubtasks.add(subtask);
@@ -134,7 +134,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
     @Override
     public void deleteByIdEpic(int id){
-        ArrayList<Subtask> subtasksInEpic = super.getAllSubtasksOfEpic(super.getEpic(id));
+        List<Subtask> subtasksInEpic = super.getAllSubtasksOfEpic(super.getEpic(id));
         for (Subtask subtask : subtasksInEpic) {
             super.deleteByIdSubtask(subtask.getId());
         }
@@ -165,21 +165,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     }
 
     @Override
-    public ArrayList<Task> getAllTasks(){
-        ArrayList tasks = super.getAllTasks();
+    public List<Task> getAllTasks(){
+        List tasks = super.getAllTasks();
         CSVutils.save(getFileManager());
         return tasks;
     }
     @Override
-    public ArrayList<Epic> getAllEpics(){
-        ArrayList epics = super.getAllEpics();
+    public List<Epic> getAllEpics(){
+        List epics = super.getAllEpics();
         CSVutils.save(getFileManager());
         return epics;
     }
 
     @Override
-    public ArrayList<Subtask> getAllSubtasks(){
-        ArrayList subtasks = super.getAllSubtasks();
+    public List<Subtask> getAllSubtasks(){
+        List subtasks = super.getAllSubtasks();
         CSVutils.save(getFileManager());
         return subtasks;
     }
@@ -192,8 +192,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     }
 
     @Override
-    public ArrayList<Subtask> getAllSubtasksOfEpic(Epic epic) {
-        ArrayList<Subtask> subtasksOfEpic;
+    public List<Subtask> getAllSubtasksOfEpic(Epic epic) {
+        List<Subtask> subtasksOfEpic;
         if (epic.getSubtasks() != null) {
             subtasksOfEpic = new ArrayList<>(epic.getSubtasks());
         } else {
@@ -203,7 +203,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     }
 
     public Task getObject(int id){
-        HashMap <Integer, Task> savedTasks = mergeAllTasks();
+        Map<Integer, Task> savedTasks = mergeAllTasks();
         Task task = savedTasks.get(id);
         return task;
     }
@@ -212,10 +212,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
         FileBackedTasksManager manager = new FileBackedTasksManager(new File("history.csv"));
 
-        int taskId1 = manager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
-        int taskId2 = manager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
+        manager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
+        manager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
 
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         int epicId = manager.addNewEpic(new Epic("...", "..."));
         manager.getEpic(epicId).setSubtasks(subtasks);
         int subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1683166053L, 172800L));

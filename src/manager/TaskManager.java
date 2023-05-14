@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-
     //Создание задачи
     int addNewTask(Task task);
 
@@ -38,14 +37,14 @@ public interface TaskManager {
     void deleteAllSubtasks();
 
     //Получение списка всех задач 
-    ArrayList<Task> getAllTasks();
-    ArrayList<Epic> getAllEpics();
-    ArrayList<Subtask> getAllSubtasks();
+    List<Task> getAllTasks();
+    List<Epic> getAllEpics();
+    List<Subtask> getAllSubtasks();
 
-     //Отображение последних просмотренных пользователем задач
-     List<Task> getHistory();
-     //Возвращение всех подзадач конкретного эпика
-     ArrayList<Subtask> getAllSubtasksOfEpic(Epic epic);
-     //Определение статуса эпика
-     void setEpicStatus(int epicId);
+    //Отображение последних просмотренных пользователем задач
+    List<Task> getHistory();
+    //Возвращение всех подзадач конкретного эпика
+    List<Subtask> getAllSubtasksOfEpic(Epic epic);
+    //Определение статуса эпика
+    void setEpicStatus(int epicId);
 }

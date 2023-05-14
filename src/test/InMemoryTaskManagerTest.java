@@ -16,16 +16,16 @@ import static model.Status.DONE;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
-    InMemoryTaskManager taskManager;
+    private InMemoryTaskManager taskManager;
 
     @BeforeEach
     public void BeforeEach(){
         taskManager = new InMemoryTaskManager();
 
-        int taskId1 = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
-        int taskId2 = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
+        taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
+        taskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
 
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         int epicId = taskManager.addNewEpic(new Epic("...", "..."));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
         int subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1683166053L, 172800L));
@@ -63,7 +63,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     @Test
     void shouldReturnEpicId() {
         //Создание эпика 1
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         Epic epic = new Epic("Test addNewEpic1", "...");
         int epicId = taskManager.addNewEpic(epic);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
@@ -82,7 +82,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
 
     @Test
     void shouldReturnSubtaskId() {
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         int epicId = 7;
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
@@ -106,7 +106,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
 
     @Test
     void shouldReturnEpicStatus(){
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         int epicId = 7;
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
@@ -143,7 +143,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     @Test
     void shouldReturnTask() {
         Task task = new Task("Test addNewTask1", "Test addNewTask description", Status.NEW, 1678017600L, 12000456L);
-        int taskId3 = taskManager.addNewTask(task);
+        taskManager.addNewTask(task);
 
         List<Task> tasks = taskManager.getAllTasks();
 
@@ -154,7 +154,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
 
     @Test
     void shouldReturnEpic() {
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         Epic epic = new Epic("Test addNewEpic1", "...");
         int epicId = taskManager.addNewEpic(epic);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
@@ -170,7 +170,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
 
     @Test
     void shouldReturnSubtask() {
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         int epicId = 3;
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
@@ -256,7 +256,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     @Test
     void shouldReturnAllEpics() {
         //Создание эпика 1
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         int epicId1 = taskManager.addNewEpic(new Epic("Epic1", "..."));
         taskManager.getEpic(epicId1).setSubtasks(subtasks);
 
@@ -279,7 +279,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
 
     @Test
     void shouldReturnAllSubtasks() {
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         Epic epic = new Epic("Epic1", "...");
         int epicId = taskManager.addNewEpic(epic);
         taskManager.getEpic(epicId).setSubtasks(subtasks);

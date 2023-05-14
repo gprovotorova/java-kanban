@@ -10,10 +10,7 @@ import java.util.Objects;
 
 
 public class Epic extends Task {
-    protected ArrayList<Subtask> subtasks;
-    protected Instant startTime;
-    protected Long duration; //минуты
-    protected Instant endTime;
+    protected List<Subtask> subtasks;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -88,11 +85,11 @@ public class Epic extends Task {
         return TaskType.EPIC;
     }
 
-    public ArrayList<Subtask> getSubtasks() {
+    public List<Subtask> getSubtasks() {
         return subtasks;
     }
 
-    public void setSubtasks(ArrayList<Subtask> subtasks) {
+    public void setSubtasks(List<Subtask> subtasks) {
         this.subtasks = subtasks;
     }
 

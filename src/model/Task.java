@@ -12,7 +12,7 @@ public class Task {
     protected Status status;
     protected String description;
     protected Instant startTime;
-    protected Long duration; //минуты
+    protected Long duration;
     protected Instant endTime;
 
     public Task(String name, String description, Status taskStatus, Long startTimeIncome, Long duration) {
@@ -103,7 +103,4 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id, name, status, description);
     }
-
-
-
 }

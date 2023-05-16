@@ -65,11 +65,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewTask(Task task) {
         task.setId(generateId());
-        try {
-            validateDoIntersectionCheck(task);
-        } catch (TimeValidationException e) {
-            throw new RuntimeException(e);
-        }
+        validateDoIntersectionCheck(task);
         tasks.put(task.getId(), task);
         memoryHistoryManager.addTask(task);
         return task.getId();
@@ -96,11 +92,7 @@ public class InMemoryTaskManager implements TaskManager {
         int epicId = epic.getId();
         if(epicId == savedEpicId){
             subtask.setId(generateId());
-            try {
             validateDoIntersectionCheck(subtask);
-        } catch (TimeValidationException e) {
-            throw new RuntimeException(e);
-        }
             subtasks.put(subtask.getId(), subtask);
             memoryHistoryManager.addTask(subtask);
             setEpicStatus(savedEpicId);
@@ -149,11 +141,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) {
         Task savedTask = tasks.get(task.getId());
-        try {
-            validateDoIntersectionCheck(task);
-        } catch (TimeValidationException e) {
-            throw new RuntimeException(e);
-        }
+        validateDoIntersectionCheck(task);
         savedTask.setName(task.getName());
         savedTask.setStatus(task.getStatus());
         savedTask.setDescription(task.getDescription());
@@ -162,11 +150,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpic(Epic epic) {
         Epic savedEpic = epics.get(epic.getId());
-        try {
-            validateDoIntersectionCheck(epic);
-        } catch (TimeValidationException e) {
-            throw new RuntimeException(e);
-        }
+        validateDoIntersectionCheck(epic);
         savedEpic.setName(epic.getName());
         savedEpic.setDescription(epic.getDescription());
         epic.setSubtasks(savedEpic.getSubtasks());
@@ -178,25 +162,13 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask savedSubtask = subtasks.get(subtask.getId());
         Epic savedEpic = epics.get(savedSubtask.getEpicId());
         if(!subtask.getStartTime().equals(savedSubtask.getStartTime())){
-            try {
             validateDoIntersectionCheck(subtask);
-        } catch (TimeValidationException e) {
-            throw new RuntimeException(e);
-        }
         }
         if(!subtask.getDuration().equals(savedSubtask.getDuration())){
-            try {
             validateDoIntersectionCheck(subtask);
-        } catch (TimeValidationException e) {
-            throw new RuntimeException(e);
-        }
         }
         if(!subtask.getEndTime().equals(savedSubtask.getEndTime())){
-            try {
             validateDoIntersectionCheck(subtask);
-        } catch (TimeValidationException e) {
-            throw new RuntimeException(e);
-        }
         }
         savedSubtask.setName(subtask.getName());
         savedSubtask.setDescription(subtask.getDescription());
@@ -230,11 +202,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(getSubtask(id).getEpicId());
         subtasks.remove(id);
         epic.countEpicTime();
-        try {
-            validateDoIntersectionCheck(epic);
-        } catch (TimeValidationException e) {
-            throw new RuntimeException(e);
-        }
+        validateDoIntersectionCheck(epic);
         memoryHistoryManager.removeTask(id);
     }
 
@@ -342,7 +310,7 @@ public class InMemoryTaskManager implements TaskManager {
         return prioritizedTasks;
     }
 
-    public void validateDoIntersectionCheck(Task task) throws TimeValidationException {
+    public void validateDoIntersectionCheck(Task task)  {
         Map<Integer, Task> allObjects = mergeAllTasks();
         Instant taskStartTime = task.getStartTime();
         Instant taskEndTime = task.getEndTime();

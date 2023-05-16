@@ -7,6 +7,7 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
 
     T taskManager;
 
+    @DisplayName("создавать задачу и возвращать ее id")
     @Test
     void shouldReturnTaskId() {
         Task task = new Task("Test addNewTask1", "...", Status.NEW, 1681224328L, 28800L);
@@ -33,6 +35,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(3, tasks.size(), "Неверное количество задач.");
     }
 
+    @DisplayName("создавать эпик и возвращать его id")
     @Test
     void shouldReturnEpicId() {
         //Создание эпика 1
@@ -53,6 +56,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(3, epics.size(), "Неверное количество эпиков.");
     }
 
+    @DisplayName("создавать подзадачу и возвращать ее id")
     @Test
     void shouldReturnSubtaskId() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -77,6 +81,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(subtask, savedSubtask, "Подзадачи не совпадают.");
     }
 
+    @DisplayName("вычислять статус эпика")
     @Test
     void shouldReturnEpicStatus(){
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -113,10 +118,11 @@ abstract class TaskManagerTest <T extends TaskManager>{
         }
     }
 
+    @DisplayName("возвращать задачу")
     @Test
     void shouldReturnTask() {
         Task task = new Task("Test addNewTask1", "Test addNewTask description", Status.NEW, 1678017600L, 12000456L);
-        int taskId3 = taskManager.addNewTask(task);
+        taskManager.addNewTask(task);
 
         List<Task> tasks = taskManager.getAllTasks();
 
@@ -125,6 +131,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(task, tasks.get(2), "Задачи не совпадают.");
     }
 
+    @DisplayName("возвращать эпик")
     @Test
     void shouldReturnEpic() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -141,6 +148,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(epic, epics.get(2), "Эпики не совпадают.");
     }
 
+    @DisplayName("возвращать подзадачу")
     @Test
     void shouldReturnSubtask() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -161,6 +169,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(subtask, savedSubtasks.get(4), "Подзадачи не совпадают.");
     }
 
+    @DisplayName("обновлять задачу и возвращать ее")
     @Test
     void shouldReturnUpdatedTask() {
         int taskId2 = 2;
@@ -179,6 +188,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(savedTask, updatedTask, "Задача не изменена.");
     }
 
+    @DisplayName("обновлять эпик и возвращать его")
     @Test
     void shouldReturnUpdatedEpic() {
         int epicId = 3;
@@ -196,6 +206,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(savedEpic, updatedEpic, "Эпик не изменен.");
     }
 
+    @DisplayName("обновлять подзадачу и возвращать ее")
     @Test
     void shouldReturnUpdatedSubtask() {
         int subtaskId = 5;
@@ -214,11 +225,12 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(savedSubtask, updatedSubtask, "Подзадача не изменена.");
     }
 
+    @DisplayName("возвращать все сохраненные задачи")
     @Test
     void shouldReturnAllTasks() {
-        int taskId1 = taskManager.addNewTask(new Task("Task1", "...", Status.NEW, 1678449600L, 28800L));
-        int taskId2 = taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1678536000L, 28800L));
-        int taskId3 = taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1678622400L, 28800L));
+        taskManager.addNewTask(new Task("Task1", "...", Status.NEW, 1678449600L, 28800L));
+        taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1678536000L, 28800L));
+        taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1678622400L, 28800L));
 
         List<Task> tasks = taskManager.getAllTasks();
 
@@ -226,6 +238,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(5, tasks.size(), "Неверное количество задач.");
     }
 
+    @DisplayName("возвращать все сохраненные эпики")
     @Test
     void shouldReturnAllEpics() {
         //Создание эпика 1
@@ -250,6 +263,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(5, epics.size(), "Неверное количество эпиков.");
     }
 
+    @DisplayName("возвращать все сохраненные подзадачи")
     @Test
     void shouldReturnAllSubtasks() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -273,6 +287,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(8, savedSubtasks.size(), "Неверное количество подзадач.");
     }
 
+    @DisplayName("возвращать историю просмотра")
     @Test
     void shouldReturnHistory() {
         //Вызов задач, подзадач и эпика
@@ -293,12 +308,13 @@ abstract class TaskManagerTest <T extends TaskManager>{
         }
     }
 
+    @DisplayName("удалять задачу по id")
     @Test
     void shouldNotReturnTask() {
         Task task1 = new Task("Task1", "...", Status.NEW, 1681224328L, 28800L);
         int taskId1 = taskManager.addNewTask(task1);
-        int taskId2 = taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1682424000L, 129600L));
-        int taskId3 = taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1683234000L, 120000L));
+        taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1682424000L, 129600L));
+        taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1683234000L, 120000L));
 
         taskManager.deleteByIdTask(taskId1);
 
@@ -309,6 +325,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertFalse(tasks.contains(task1), "Задача не должна возвращаться.");
     }
 
+    @DisplayName("удалять эпик по id")
     @Test
     void shouldNotReturnEpic() {
         int epicId = 3;
@@ -323,6 +340,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertFalse(epics.contains(epic), "Эпик не должен возвращаться.");
     }
 
+    @DisplayName("удалять подзадачу по id")
     @Test
     void shouldNotReturnSubtask() {
         int subtaskId5 = 5;
@@ -337,6 +355,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertFalse(savedSubtasks.contains(subtask), "Подзадача не должна возвращаться.");
     }
 
+    @DisplayName("возвращать все подзадачи эпика")
     @Test
     void shouldReturnAllSubtasksOfEpic(){
         int epicId = 3;
@@ -347,6 +366,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(3, savedSubtasks.size(), "Неверное количество подзадач.");
     }
 
+    @DisplayName("удалять все задачи")
     @Test
     void shouldNotReturnTasks() {
         List<Task> tasksBeforeDelete = taskManager.getAllTasks();
@@ -358,6 +378,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(0, tasksAfterDelete.size(), "В списке не должно быть задач.");
     }
 
+    @DisplayName("удалять все эпики")
     @Test
     void shouldNotReturnEpics() {
         List<Epic> epicsBeforeDelete = taskManager.getAllEpics();
@@ -373,6 +394,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         assertEquals(0, subtasksAfterDelete.size(), "В списке не должно быть подзадач.");
     }
 
+    @DisplayName("удалять все подзадачи")
     @Test
     void shouldNotReturnSubtasks() {
         List<Subtask> subtasksBeforeDelete = taskManager.getAllSubtasks();

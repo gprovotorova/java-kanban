@@ -5,12 +5,14 @@ import manager.InMemoryTaskManager;
 import model.Status;
 import model.Task;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("InMemoryHistoryManager должен")
 class InMemoryHistoryManagerTest <T extends HistoryManager>{
     private InMemoryTaskManager taskManager;
 
@@ -24,6 +26,7 @@ class InMemoryHistoryManagerTest <T extends HistoryManager>{
         taskManager.addNewTask(new Task("...", "...", Status.DONE, 1683029253L, 86400L));
     }
 
+    @DisplayName("добавлять задачу в двусвязный список и определять ссылки на предыдущий и последующий элемент")
     @Test
     void addTask() {
         Task task = new Task("...", "...", Status.DONE, 1681224328L, 28800L);
@@ -43,6 +46,7 @@ class InMemoryHistoryManagerTest <T extends HistoryManager>{
         }
     }
 
+    @DisplayName("удалять задачу из двусвязного списка и переопределять ссылки на предыдущий и последующий элемент")
     @Test
     void removeTask() {
         taskManager.deleteByIdTask(3);
@@ -67,6 +71,7 @@ class InMemoryHistoryManagerTest <T extends HistoryManager>{
         }
     }
 
+    @DisplayName("возвращать историю просмотра задач")
     @Test
     void getAll() {
         List<Task> savedTasks = taskManager.memoryHistoryManager.getAll();

@@ -6,6 +6,7 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.CSVutils;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("CSVutils должен")
 class CSVutilsTest {
     private static File file = new File("check.csv");
     FileBackedTasksManager fileTaskManager;
@@ -22,8 +24,8 @@ class CSVutilsTest {
     public void BeforeEach(){
         fileTaskManager = new FileBackedTasksManager(file);
 
-        int taskId1 = fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
-        int taskId2 = fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
+        fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
+        fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
 
         ArrayList<Subtask> subtasks = new ArrayList<>();
         int epicId = fileTaskManager.addNewEpic(new Epic("...", "..."));
@@ -46,6 +48,7 @@ class CSVutilsTest {
         fileTaskManager.getEpic(epicId).countEpicTime();
     }
 
+    @DisplayName("сохранять информацию в файл")
     @Test
     void save() {
         fileTaskManager.getEpic(3);

@@ -6,17 +6,18 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.CSVutils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static model.Status.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("FileBackedTasksManager должен")
 class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>{
 
     private static File file = new File("check.csv");
@@ -26,8 +27,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     public void BeforeEach(){
         fileTaskManager = new FileBackedTasksManager(file);
 
-        int taskId1 = fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
-        int taskId2 = fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
+        fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
+        fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
 
         ArrayList<Subtask> subtasks = new ArrayList<>();
         int epicId = fileTaskManager.addNewEpic(new Epic("...", "..."));
@@ -50,6 +51,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         fileTaskManager.getEpic(epicId).countEpicTime();
     }
 
+    @DisplayName("создавать задачу и возвращать ее id")
     @Test
     void shouldReturnTaskId() {
         Task task = new Task("Test addNewTask1", "...", Status.NEW, 1681224328L, 28800L);
@@ -64,6 +66,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(3, tasks.size(), "Неверное количество задач.");
     }
 
+    @DisplayName("создавать эпик и возвращать его id")
     @Test
     void shouldReturnEpicId() {
         //Создание эпика 1
@@ -84,6 +87,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(3, epics.size(), "Неверное количество эпиков.");
     }
 
+    @DisplayName("создавать подзадачу и возвращать ее id")
     @Test
     void shouldReturnSubtaskId() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -108,6 +112,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(subtask, savedSubtask, "Подзадачи не совпадают.");
     }
 
+    @DisplayName("вычислять статус эпика")
     @Test
     void shouldReturnEpicStatus(){
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -144,10 +149,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         }
     }
 
+    @DisplayName("возвращать задачу")
     @Test
     void shouldReturnTask() {
         Task task = new Task("Test addNewTask1", "Test addNewTask description", Status.NEW, 1678017600L, 12000456L);
-        int taskId3 = fileTaskManager.addNewTask(task);
+        fileTaskManager.addNewTask(task);
 
         List<Task> tasks = fileTaskManager.getAllTasks();
 
@@ -156,6 +162,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(task, tasks.get(2), "Задачи не совпадают.");
     }
 
+    @DisplayName("возвращать эпик")
     @Test
     void shouldReturnEpic() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -172,6 +179,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(epic, epics.get(2), "Эпики не совпадают.");
     }
 
+    @DisplayName("возвращать подзадачу")
     @Test
     void shouldReturnSubtask() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -192,6 +200,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(subtask, savedSubtasks.get(4), "Подзадачи не совпадают.");
     }
 
+    @DisplayName("обновлять задачу и возвращать ее")
     @Test
     void shouldReturnUpdatedTask() {
         int taskId2 = 2;
@@ -210,6 +219,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(savedTask, updatedTask, "Задача не изменена.");
     }
 
+    @DisplayName("обновлять эпик и возвращать его")
     @Test
     void shouldReturnUpdatedEpic() {
         int epicId = 3;
@@ -227,6 +237,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(savedEpic, updatedEpic, "Эпик не изменен.");
     }
 
+    @DisplayName("обновлять подзадачу и возвращать ее")
     @Test
     void shouldReturnUpdatedSubtask() {
         int subtaskId = 5;
@@ -245,11 +256,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(savedSubtask, updatedSubtask, "Подзадача не изменена.");
     }
 
+    @DisplayName("возвращать все сохраненные задачи")
     @Test
     void shouldReturnAllTasks() {
-        int taskId1 = fileTaskManager.addNewTask(new Task("Task1", "...", Status.NEW, 1678449600L, 28800L));
-        int taskId2 = fileTaskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1678536000L, 28800L));
-        int taskId3 = fileTaskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1678622400L, 28800L));
+        fileTaskManager.addNewTask(new Task("Task1", "...", Status.NEW, 1678449600L, 28800L));
+        fileTaskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1678536000L, 28800L));
+        fileTaskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1678622400L, 28800L));
 
         List<Task> tasks = fileTaskManager.getAllTasks();
 
@@ -257,6 +269,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(5, tasks.size(), "Неверное количество задач.");
     }
 
+    @DisplayName("возвращать все сохраненные эпики")
     @Test
     void shouldReturnAllEpics() {
         //Создание эпика 1
@@ -281,6 +294,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(5, epics.size(), "Неверное количество эпиков.");
     }
 
+    @DisplayName("возвращать все сохраненные подзадачи")
     @Test
     void shouldReturnAllSubtasks() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
@@ -304,6 +318,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(8, savedSubtasks.size(), "Неверное количество подзадач.");
     }
 
+    @DisplayName("возвращать историю просмотра")
     @Test
     void shouldReturnHistory() {
         //Вызов задач, подзадач и эпика
@@ -324,12 +339,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         }
     }
 
+    @DisplayName("удалять задачу по id")
     @Test
     void shouldNotReturnTask() {
         Task task1 = new Task("Task1", "...", Status.NEW, 1681224328L, 28800L);
         int taskId1 = fileTaskManager.addNewTask(task1);
-        int taskId2 = fileTaskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1682424000L, 129600L));
-        int taskId3 = fileTaskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1683234000L, 120000L));
+        fileTaskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1682424000L, 129600L));
+        fileTaskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1683234000L, 120000L));
 
         fileTaskManager.deleteByIdTask(taskId1);
 
@@ -340,6 +356,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertFalse(tasks.contains(task1), "Задача не должна возвращаться.");
     }
 
+    @DisplayName("удалять эпик по id")
     @Test
     void shouldNotReturnEpic() {
         int epicId = 3;
@@ -354,6 +371,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertFalse(epics.contains(epic), "Эпик не должен возвращаться.");
     }
 
+    @DisplayName("удалять подзадачу по id")
     @Test
     void shouldNotReturnSubtask() {
         int subtaskId5 = 5;
@@ -368,6 +386,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertFalse(savedSubtasks.contains(subtask), "Подзадача не должна возвращаться.");
     }
 
+    @DisplayName("возвращать все подзадачи эпика")
     @Test
     void shouldReturnAllSubtasksOfEpic(){
         int epicId = 3;
@@ -378,6 +397,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(3, savedSubtasks.size(), "Неверное количество подзадач.");
     }
 
+    @DisplayName("удалять все задачи")
     @Test
     void shouldNotReturnTasks() {
         List<Task> tasksBeforeDelete = fileTaskManager.getAllTasks();
@@ -389,6 +409,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(0, tasksAfterDelete.size(), "В списке не должно быть задач.");
     }
 
+    @DisplayName("удалять все эпики")
     @Test
     void shouldNotReturnEpics() {
         List<Epic> epicsBeforeDelete = fileTaskManager.getAllEpics();
@@ -404,6 +425,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(0, subtasksAfterDelete.size(), "В списке не должно быть подзадач.");
     }
 
+    @DisplayName("удалять все подзадачи")
     @Test
     void shouldNotReturnSubtasks() {
         List<Subtask> subtasksBeforeDelete = fileTaskManager.getAllSubtasks();
@@ -415,6 +437,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(0, subtasksAfterDelete.size(), "В списке не должно быть подзадач.");
     }
 
+    @DisplayName("восстанавливать данные из файла")
     @Test
     void shouldReturnAllTasksFromFile(){
         CSVutils.save(fileTaskManager);

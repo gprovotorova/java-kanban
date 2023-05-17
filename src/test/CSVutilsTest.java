@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("CSVutils должен")
 class CSVutilsTest {
     private static File file = new File("check.csv");
     FileBackedTasksManager fileTaskManager;

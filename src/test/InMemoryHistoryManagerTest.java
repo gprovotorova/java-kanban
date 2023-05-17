@@ -12,7 +12,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("InMemoryHistoryManager должен")
 class InMemoryHistoryManagerTest <T extends HistoryManager>{
     private InMemoryTaskManager taskManager;
 

@@ -17,7 +17,6 @@ import static model.Status.*;
 import static model.Status.DONE;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("InMemoryTaskManager должен")
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     private InMemoryTaskManager taskManager;
 
@@ -92,20 +91,20 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         int epicId = 7;
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId1 = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1677672000L, 43200L));
-        subtasks.add(taskManager.getSubtask(subtaskId1));
-        int subtaskId2 = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1677758400L, 43200L));
-        subtasks.add(taskManager.getSubtask(subtaskId2));
-        int subtaskId3 = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1677844800L, 43200L));
-        subtasks.add(taskManager.getSubtask(subtaskId3));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1677672000L, 43200L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1677758400L, 43200L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1677844800L, 43200L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
         Subtask subtask = new Subtask("Test addNewSubtask4", "...", epicId, Status.DONE, 1677931200L, 43200L);
-        int subtaskId4 = taskManager.addNewSubtask(subtask);
-        subtasks.add(taskManager.getSubtask(subtaskId4));
+        subtaskId = taskManager.addNewSubtask(subtask);
+        subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
 
         assertNotNull(epic, "Эпик не найден.");
 
-        Subtask savedSubtask = taskManager.getSubtask(subtaskId4);
+        Subtask savedSubtask = taskManager.getSubtask(subtaskId);
         assertNotNull(savedSubtask, "Подзадача не найдена.");
         assertEquals(subtask, savedSubtask, "Подзадачи не совпадают.");
     }
@@ -117,12 +116,12 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         int epicId = 7;
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId1 = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1681387200L, 28800L));
-        subtasks.add(taskManager.getSubtask(subtaskId1));
-        int subtaskId2 = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1681473600L, 28800L));
-        subtasks.add(taskManager.getSubtask(subtaskId2));
-        int subtaskId3 = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1681819200L, 43200L));
-        subtasks.add(taskManager.getSubtask(subtaskId3));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1681387200L, 28800L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1681473600L, 28800L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1681819200L, 43200L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
         taskManager.setEpicStatus(epicId);
         List<Subtask> subtasksOfEpic = taskManager.getAllSubtasksOfEpic(epic);
@@ -185,8 +184,8 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
         Subtask subtask = new Subtask("Subtask4", "...", epicId, Status.DONE, 1677931200L, 43200L);
-        int subtaskId4 = taskManager.addNewSubtask(subtask);
-        subtasks.add(taskManager.getSubtask(subtaskId4));
+        int subtaskId = taskManager.addNewSubtask(subtask);
+        subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
 
         assertNotNull(epic, "Эпик не найден.");
@@ -201,9 +200,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     @DisplayName("обновлять задачу и возвращать ее")
     @Test
     void shouldReturnUpdatedTask() {
-        int taskId2 = 2;
+        int taskId = 2;
 
-        Task savedTask = taskManager.getTask(taskId2);
+        Task savedTask = taskManager.getTask(taskId);
         assertNotNull(savedTask, "Задача не найдена.");
 
         List<Task> tasks = taskManager.getAllTasks();
@@ -211,7 +210,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
 
         savedTask.setDescription("UPDATED");
         taskManager.updateTask(savedTask);
-        Task updatedTask = taskManager.getTask(taskId2);
+        Task updatedTask = taskManager.getTask(taskId);
 
         assertEquals(2, tasks.size(), "Неверное количество задач.");
         assertEquals(savedTask, updatedTask, "Задача не изменена.");
@@ -272,19 +271,19 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     void shouldReturnAllEpics() {
         //Создание эпика 1
         ArrayList<Subtask> subtasks = new ArrayList<>();
-        int epicId1 = taskManager.addNewEpic(new Epic("Epic1", "..."));
-        taskManager.getEpic(epicId1).setSubtasks(subtasks);
+        int epicId = taskManager.addNewEpic(new Epic("Epic1", "..."));
+        taskManager.getEpic(epicId).setSubtasks(subtasks);
 
         //Создание эпика 2
         subtasks = new ArrayList<>();
-        Epic epic2 = new Epic("Epic2", "...");
-        int epicId2 = taskManager.addNewEpic(epic2);
-        taskManager.getEpic(epicId2).setSubtasks(subtasks);
+        Epic epic = new Epic("Epic2", "...");
+        epicId = taskManager.addNewEpic(epic);
+        taskManager.getEpic(epicId).setSubtasks(subtasks);
 
         //Создание эпика 3
         subtasks = new ArrayList<>();
-        int epicId3 = taskManager.addNewEpic(new Epic("Epic3", "..."));
-        taskManager.getEpic(epicId3).setSubtasks(subtasks);
+        epicId = taskManager.addNewEpic(new Epic("Epic3", "..."));
+        taskManager.getEpic(epicId).setSubtasks(subtasks);
 
         List<Epic> epics = taskManager.getAllEpics();
 
@@ -299,15 +298,15 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         Epic epic = new Epic("Epic1", "...");
         int epicId = taskManager.addNewEpic(epic);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId1 = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1678449600L, 28800L));
-        subtasks.add(taskManager.getSubtask(subtaskId1));
-        int subtaskId2 = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1678536000L, 28800L));
-        subtasks.add(taskManager.getSubtask(subtaskId2));
-        int subtaskId3 = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1678622400L, 28800L));
-        subtasks.add(taskManager.getSubtask(subtaskId3));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1678449600L, 28800L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1678536000L, 28800L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1678622400L, 28800L));
+        subtasks.add(taskManager.getSubtask(subtaskId));
         Subtask subtask = new Subtask("Subtask4", "...", epicId, Status.DONE, 1682251200L, 67000L);
-        int subtaskId4 = taskManager.addNewSubtask(subtask);
-        subtasks.add(taskManager.getSubtask(subtaskId4));
+        subtaskId = taskManager.addNewSubtask(subtask);
+        subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
 
         List<Subtask> savedSubtasks = taskManager.getAllSubtasks();
@@ -340,18 +339,18 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     @DisplayName("удалять задачу по id")
     @Test
     void shouldNotReturnTask() {
-        Task task1 = new Task("Task1", "...", Status.NEW, 1681224328L, 28800L);
-        int taskId1 = taskManager.addNewTask(task1);
+        Task task = new Task("Task1", "...", Status.NEW, 1681224328L, 28800L);
+        int taskId = taskManager.addNewTask(task);
         taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1682424000L, 129600L));
         taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1683234000L, 120000L));
 
-        taskManager.deleteByIdTask(taskId1);
+        taskManager.deleteByIdTask(taskId);
 
         List<Task> tasks = taskManager.getAllTasks();
         assertNotNull(tasks, "Задачи не возвращаются.");
 
         assertEquals(4, tasks.size(), "Количество задач должно быть меньше.");
-        assertFalse(tasks.contains(task1), "Задача не должна возвращаться.");
+        assertFalse(tasks.contains(task), "Задача не должна возвращаться.");
     }
 
     @DisplayName("удалять эпик по id")
@@ -372,10 +371,10 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     @DisplayName("удалять подзадачу по id")
     @Test
     void shouldNotReturnSubtask() {
-        int subtaskId5 = 5;
-        Subtask subtask = taskManager.getSubtask(subtaskId5);
+        int subtaskId = 5;
+        Subtask subtask = taskManager.getSubtask(subtaskId);
 
-        taskManager.deleteByIdSubtask(subtaskId5);
+        taskManager.deleteByIdSubtask(subtaskId);
 
         List<Subtask> savedSubtasks = taskManager.getAllSubtasks();
         assertNotNull(savedSubtasks, "Подзадачи не возвращаются.");

@@ -4,7 +4,6 @@ import manager.TaskType;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,23 +54,21 @@ public class Epic extends Task {
             setDuration(0L);
             setEndTime(getStartTime().plus(10, ChronoUnit.MINUTES));
             return;
-        }
-        if(subtasksOfEpic.size() == 1) {
+        } else if(subtasksOfEpic.size() == 1) {
             setStartTime(subtasksOfEpic.get(0).getStartTime());
             setDuration(subtasksOfEpic.get(0).getDuration());
             setEndTime(subtasksOfEpic.get(0).getEndTime());
-        }
-        if(subtasksOfEpic != null){
+        } else {
             for (int i = 0; i < subtasksOfEpic.size()-1; i++) {
-                Subtask subtask1 = subtasksOfEpic.get(i);
-                Subtask subtask2 = subtasksOfEpic.get(i+1);
-                Instant timeOfSubtask1 = subtask1.getStartTime();
-                Instant timeOfSubtask2 = subtask2.getStartTime();
-                if(timeOfSubtask1.isBefore(timeOfSubtask2)){
-                    setStartTime(timeOfSubtask1);
+                Instant firstSubtaskStartTime = subtasksOfEpic.get(i).getStartTime();
+                Instant secondSubtaskStartTime = subtasksOfEpic.get(i+1).getStartTime();
+                if(firstSubtaskStartTime.isBefore(secondSubtaskStartTime)){
+                    setStartTime(firstSubtaskStartTime);
                 }
-                if (timeOfSubtask2.isAfter(timeOfSubtask1)) {
-                    setEndTime(timeOfSubtask2);
+                Instant firstSubtaskEndTime = subtasksOfEpic.get(i).getEndTime();
+                Instant secondSubtaskEndTime = subtasksOfEpic.get(i+1).getEndTime();
+                if (firstSubtaskEndTime.isAfter(secondSubtaskEndTime)) {
+                    setEndTime(firstSubtaskEndTime);
                 }
             }
             for (Subtask subtask : subtasksOfEpic) {

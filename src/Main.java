@@ -8,6 +8,7 @@ import server.KVServer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -26,7 +27,7 @@ public class Main {
         System.out.println("Information about task: " + taskManager.getTask(taskId).toString());
 
         //Создание эпика 1
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new ArrayList<>();
         int epicId = taskManager.addNewEpic(new Epic("...", "..."));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
         int subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1693748287L, 43200L));
@@ -112,6 +113,5 @@ public class Main {
 
         //Вывод задач в порядке приоритета
         System.out.println("Priority history: " + taskManager.getPrioritizedTasks());
-
     }
 }

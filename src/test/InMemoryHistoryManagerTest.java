@@ -4,6 +4,7 @@ import manager.HistoryManager;
 import manager.InMemoryTaskManager;
 import model.Status;
 import model.Task;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,17 +19,22 @@ class InMemoryHistoryManagerTest <T extends HistoryManager>{
     @BeforeEach
     public void BeforeEach(){
         taskManager = new InMemoryTaskManager();
-        taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
-        taskManager.addNewTask(new Task("...", "...", Status.DONE, 1683425253L, 129600L));
-        taskManager.addNewTask(new Task("...", "...", Status.IN_PROGRESS, 1683166053L, 172800L));
-        taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682906853L, 43200L));
-        taskManager.addNewTask(new Task("...", "...", Status.DONE, 1683029253L, 86400L));
+        taskManager.addNewTask(new Task("...", "...", Status.NEW, 1685620800L, 28800L));
+        taskManager.addNewTask(new Task("...", "...", Status.DONE, 1685793600L, 28800L));
+        taskManager.addNewTask(new Task("...", "...", Status.IN_PROGRESS, 1685966400L, 28800L));
+        taskManager.addNewTask(new Task("...", "...", Status.NEW, 1686225600L, 28800L));
+        taskManager.addNewTask(new Task("...", "...", Status.DONE, 1686312000L, 28800L));
+    }
+
+    @AfterEach
+    public void AfterEach(){
+        taskManager.deleteAll();
     }
 
     @DisplayName("добавлять задачу в двусвязный список и определять ссылки на предыдущий и последующий элемент")
     @Test
     void addTask() {
-        Task task = new Task("...", "...", Status.DONE, 1681224328L, 28800L);
+        Task task = new Task("...", "...", Status.DONE, 1686398400L, 28800L);
         int taskId = taskManager.addNewTask(task);
 
         List<Task> savedTasks = taskManager.memoryHistoryManager.getAll();

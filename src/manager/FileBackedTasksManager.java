@@ -12,7 +12,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
 
@@ -21,7 +20,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     public FileBackedTasksManager(File file) {
         this.file = file;
     }
-    
+
+    public FileBackedTasksManager() {
+    }
+
     public FileBackedTasksManager getFileManager(){
         return FileBackedTasksManager.this;
     }
@@ -202,27 +204,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         return subtasksOfEpic;
     }
 
-    public Task getObject(int id){
-        Map<Integer, Task> savedTasks = mergeAllTasks();
-        Task task = savedTasks.get(id);
-        return task;
-    }
-
     public static void main(String[] args) {
 
         FileBackedTasksManager manager = new FileBackedTasksManager(new File("history.csv"));
 
-        manager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
-        manager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
+        manager.addNewTask(new Task("...", "...", Status.NEW, 1694088000L, 36000L));
+        manager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 36000L));
 
         List<Subtask> subtasks = new ArrayList<>();
         int epicId = manager.addNewEpic(new Epic("...", "..."));
         manager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1683166053L, 172800L));
+        int subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1683166053L, 36000L));
         subtasks.add(manager.getSubtask(subtaskId));
-        subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW, 1682906853L, 43200L));
+        subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW, 1682906853L, 36000L));
         subtasks.add(manager.getSubtask(subtaskId));
-        subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1683029253L, 86400L));
+        subtaskId = manager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1683029253L, 36000L));
         subtasks.add(manager.getSubtask(subtaskId));
         manager.getEpic(epicId).setSubtasks(subtasks);
         manager.getEpic(epicId).countEpicTime();

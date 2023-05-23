@@ -21,7 +21,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
     @DisplayName("создавать задачу и возвращать ее id")
     @Test
     void shouldReturnTaskId() {
-        Task task = new Task("Test addNewTask1", "...", Status.NEW, 1681224328L, 28800L);
+        Task task = new Task("Test addNewTask1", "...", Status.NEW, 1672660800L, 28800L);
         int taskId = taskManager.addNewTask(task);
 
         Task savedTask = taskManager.getTask(taskId);
@@ -41,7 +41,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         Epic epic = new Epic("Test addNewEpic1", "...");
         int epicId = taskManager.addNewEpic(epic);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, IN_PROGRESS, 1678276800L, 43200L));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, IN_PROGRESS, 1672747200L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
         epic.countEpicTime();
@@ -61,13 +61,13 @@ abstract class TaskManagerTest <T extends TaskManager>{
         int epicId = 7;
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1677672000L, 43200L));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1672833600L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1677758400L, 43200L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1672920000L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1677844800L, 43200L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1673006400L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        Subtask subtask = new Subtask("Test addNewSubtask4", "...", epicId, Status.DONE, 1677931200L, 43200L);
+        Subtask subtask = new Subtask("Test addNewSubtask4", "...", epicId, Status.DONE, 1673092800L, 43200L);
         subtaskId = taskManager.addNewSubtask(subtask);
         subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
@@ -86,11 +86,11 @@ abstract class TaskManagerTest <T extends TaskManager>{
         int epicId = 7;
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1681387200L, 28800L));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1673179200L, 28800L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1681473600L, 28800L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1673265600L, 28800L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1681819200L, 43200L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1673352000L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
         taskManager.setEpicStatus(epicId);
@@ -119,7 +119,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
     @DisplayName("возвращать задачу")
     @Test
     void shouldReturnTask() {
-        Task task = new Task("Test addNewTask1", "Test addNewTask description", Status.NEW, 1678017600L, 12000456L);
+        Task task = new Task("Test addNewTask1", "Test addNewTask description", Status.NEW, 1673524800L, 36000L);
         taskManager.addNewTask(task);
 
         List<Task> tasks = taskManager.getAllTasks();
@@ -136,7 +136,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         Epic epic = new Epic("Test addNewEpic1", "...");
         int epicId = taskManager.addNewEpic(epic);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, IN_PROGRESS, 1678017600L, 13769200L));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, IN_PROGRESS, 1673611200L, 36000L));
         subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
 
@@ -153,7 +153,7 @@ abstract class TaskManagerTest <T extends TaskManager>{
         int epicId = 3;
         Epic epic = taskManager.getEpic(epicId);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        Subtask subtask = new Subtask("Subtask4", "...", epicId, Status.DONE, 1677931200L, 43200L);
+        Subtask subtask = new Subtask("Subtask4", "...", epicId, Status.DONE, 1673784000L, 43200L);
         int subtaskId = taskManager.addNewSubtask(subtask);
         subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
@@ -226,9 +226,9 @@ abstract class TaskManagerTest <T extends TaskManager>{
     @DisplayName("возвращать все сохраненные задачи")
     @Test
     void shouldReturnAllTasks() {
-        taskManager.addNewTask(new Task("Task1", "...", Status.NEW, 1678449600L, 28800L));
-        taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1678536000L, 28800L));
-        taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1678622400L, 28800L));
+        taskManager.addNewTask(new Task("Task1", "...", Status.NEW, 1673870400L, 28800L));
+        taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1673956800L, 28800L));
+        taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1674043200L, 28800L));
 
         List<Task> tasks = taskManager.getAllTasks();
 
@@ -267,13 +267,13 @@ abstract class TaskManagerTest <T extends TaskManager>{
         Epic epic = new Epic("Epic1", "...");
         int epicId = taskManager.addNewEpic(epic);
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1678449600L, 28800L));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("Subtask1", "...", epicId, Status.IN_PROGRESS, 1674129600L, 28800L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1678536000L, 28800L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask2", "...", epicId, Status.NEW, 1674216000L, 28800L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1678622400L, 28800L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("Subtask3", "...", epicId, Status.DONE, 1674302400L, 28800L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        Subtask subtask = new Subtask("Subtask4", "...", epicId, Status.DONE, 1682251200L, 67000L);
+        Subtask subtask = new Subtask("Subtask4", "...", epicId, Status.DONE, 1674388800L, 67000L);
         subtaskId = taskManager.addNewSubtask(subtask);
         subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
@@ -308,10 +308,10 @@ abstract class TaskManagerTest <T extends TaskManager>{
     @DisplayName("удалять задачу по id")
     @Test
     void shouldNotReturnTask() {
-        Task task = new Task("Task1", "...", Status.NEW, 1681224328L, 28800L);
+        Task task = new Task("Task1", "...", Status.NEW, 1674475200L, 28800L);
         int taskId = taskManager.addNewTask(task);
-        taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1682424000L, 129600L));
-        taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1683234000L, 120000L));
+        taskManager.addNewTask(new Task("Task2", "...", Status.NEW, 1674561600L, 129600L));
+        taskManager.addNewTask(new Task("Task3", "...", Status.NEW, 1674648000L, 120000L));
 
         taskManager.deleteByIdTask(taskId);
 

@@ -1,23 +1,27 @@
-import manager.InMemoryTaskManager;
+import manager.Managers;
+import manager.TaskManager;
 import model.Epic;
 import model.Status;
 import model.Subtask;
 import model.Task;
+import server.KVServer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        new KVServer().start();
+        TaskManager taskManager = Managers.getDefaultTaskManager();
 
         //Создание задачи 1
-        int taskId = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
+        int taskId = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1693575487L, 43200L));
         System.out.println("Create new task: " + taskId);
         System.out.println("Information about task: " + taskManager.getTask(taskId).toString());
 
         //Создание задачи 2
-        taskId = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
+        taskId = taskManager.addNewTask(new Task("...", "...", Status.NEW, 1693661887L, 43200L));
         System.out.println("Create new task: " + taskId);
         System.out.println("Information about task: " + taskManager.getTask(taskId).toString());
 
@@ -25,23 +29,22 @@ public class Main {
         ArrayList<Subtask> subtasks = new ArrayList<>();
         int epicId = taskManager.addNewEpic(new Epic("...", "..."));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1683166053L, 172800L));
+        int subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1693748287L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW, 1682906853L, 43200L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW, 1693834687L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
-        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1683029253L, 86400L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1693921087L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
         taskManager.getEpic(epicId).countEpicTime();
         System.out.println("Create new epic: " + epicId);
         System.out.println("Information about epic: " + taskManager.getEpic(epicId).toString());
 
-
         //Создание эпика 2
         subtasks = new ArrayList<>();
         epicId = taskManager.addNewEpic(new Epic("...", "..."));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
-        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1677931200L, 43200L));
+        subtaskId = taskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1694007487L, 43200L));
         subtasks.add(taskManager.getSubtask(subtaskId));
         taskManager.getEpic(epicId).setSubtasks(subtasks);
         taskManager.getEpic(epicId).countEpicTime();
@@ -109,5 +112,6 @@ public class Main {
 
         //Вывод задач в порядке приоритета
         System.out.println("Priority history: " + taskManager.getPrioritizedTasks());
+
     }
 }

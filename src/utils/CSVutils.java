@@ -117,6 +117,7 @@ public class CSVutils {
 
     public static List<Integer> historyFromString(String line){
         String [] array = line.split(COMMA);
+        String a = array[0];
         List<Integer> history = new ArrayList<>();
         for (int i = 0; i < array.length; i++) {
             history.add(Integer.parseInt(array[i]));

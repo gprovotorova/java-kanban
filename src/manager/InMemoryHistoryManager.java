@@ -11,11 +11,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node tail;
     private HashMap <Integer, Node> viewHistory = new HashMap<>();
 
-    /*public InMemoryHistoryManager() {
-        this.viewHistory = viewHistory;
-    }
-    */
-
     @Override
     public void addTask(Task task) {
         Node node = viewHistory.get(task.getId());

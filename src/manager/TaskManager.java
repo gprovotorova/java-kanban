@@ -4,8 +4,10 @@ import model.Epic;
 import model.Subtask;
 import model.Task;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public interface TaskManager {
     //Создание задачи
@@ -47,4 +49,6 @@ public interface TaskManager {
     List<Subtask> getAllSubtasksOfEpic(Epic epic);
     //Определение статуса эпика
     void setEpicStatus(int epicId);
+    Map<Instant, Task> getPrioritizedTasks();
+    public void deleteAll();
 }

@@ -23,17 +23,17 @@ class CSVutilsTest {
     public void BeforeEach(){
         fileTaskManager = new FileBackedTasksManager(file);
 
-        fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1682812800L, 180000L));
-        fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1683425253L, 129600L));
+        fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1687521600L, 28800L));
+        fileTaskManager.addNewTask(new Task("...", "...", Status.NEW, 1687608000L, 28800L));
 
         ArrayList<Subtask> subtasks = new ArrayList<>();
         int epicId = fileTaskManager.addNewEpic(new Epic("...", "..."));
         fileTaskManager.getEpic(epicId).setSubtasks(subtasks);
-        int subtaskId = fileTaskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1683166053L, 172800L));
+        int subtaskId = fileTaskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.IN_PROGRESS, 1687694400L, 28800L));
         subtasks.add(fileTaskManager.getSubtask(subtaskId));
-        subtaskId = fileTaskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW, 1682906853L, 43200L));
+        subtaskId = fileTaskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.NEW, 1687780800L, 28800L));
         subtasks.add(fileTaskManager.getSubtask(subtaskId));
-        subtaskId = fileTaskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1683029253L, 86400L));
+        subtaskId = fileTaskManager.addNewSubtask(new Subtask("...", "...", epicId, Status.DONE, 1687867200L, 28800L));
         subtasks.add(fileTaskManager.getSubtask(subtaskId));
         fileTaskManager.getEpic(epicId).setSubtasks(subtasks);
         fileTaskManager.getEpic(epicId).countEpicTime();
@@ -41,7 +41,7 @@ class CSVutilsTest {
         subtasks = new ArrayList<>();
         epicId = fileTaskManager.addNewEpic(new Epic("EPIC 2", "..."));
         fileTaskManager.getEpic(epicId).setSubtasks(subtasks);
-        subtaskId = fileTaskManager.addNewSubtask(new Subtask("SUBTASK 4", "...", epicId, Status.DONE, 1684029700L, 67000L));
+        subtaskId = fileTaskManager.addNewSubtask(new Subtask("SUBTASK 4", "...", epicId, Status.DONE, 1687953600L, 28800L));
         subtasks.add(fileTaskManager.getSubtask(subtaskId));
         fileTaskManager.getEpic(epicId).setSubtasks(subtasks);
         fileTaskManager.getEpic(epicId).countEpicTime();

@@ -1,10 +1,7 @@
 package manager;
 
 import exceptions.TimeValidationException;
-import model.Epic;
-import model.Status;
-import model.Subtask;
-import model.Task;
+import model.*;
 
 import java.time.Instant;
 import java.util.*;
@@ -18,9 +15,9 @@ public class InMemoryTaskManager implements TaskManager {
     };
 
     private int id = 0;
-    public final Map <Integer, Task> tasks = new HashMap<>();
-    public final Map <Integer, Epic> epics = new HashMap<>();
-    public final Map <Integer, Subtask> subtasks = new HashMap<>();
+    public Map <Integer, Task> tasks = new HashMap<>();
+    public Map <Integer, Epic> epics = new HashMap<>();
+    public Map <Integer, Subtask> subtasks = new HashMap<>();
 
     public Map<Instant, Task> prioritizedTasks = new TreeMap(timeComparator);
 
@@ -287,6 +284,12 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(epic.getSubtasks());
     }
 
+    public Task getObject(int id){
+        Map<Integer, Task> savedTasks = mergeAllTasks();
+        Task task = savedTasks.get(id);
+        return task;
+    }
+
     public Map <Integer, Task> mergeAllTasks() {
         Map <Integer, Task> allObjects = new HashMap<>();
         for(int idTask : tasks.keySet()){
@@ -329,5 +332,13 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
         }
+    }
+
+    public void deleteAll(){
+        tasks.clear();
+        subtasks.clear();
+        epics.clear();
+        memoryHistoryManager.cleanViewHistory();
+        prioritizedTasks.clear();
     }
 }

@@ -22,6 +22,9 @@ public class HttpTaskManager extends InMemoryTaskManager{
         this.url = url;
     }
 
+    public HttpTaskManager() {
+    }
+
     @Override
     public int addNewTask(Task task) {
         int taskId = super.addNewTask(task);
@@ -120,20 +123,17 @@ public class HttpTaskManager extends InMemoryTaskManager{
 
     @Override
     public List<Task> getAllTasks() {
-        List<Task> tasks = super.getAllTasks();
-        return tasks;
+        return super.getAllTasks();
     }
 
     @Override
     public List<Epic> getAllEpics() {
-        List<Epic> epics = super.getAllEpics();
-        return epics;
+        return super.getAllEpics();
     }
 
     @Override
     public List<Subtask> getAllSubtasks() {
-        List<Subtask> subtasks = super.getAllSubtasks();
-        return subtasks;
+        return super.getAllSubtasks();
     }
 
     @Override
@@ -156,7 +156,7 @@ public class HttpTaskManager extends InMemoryTaskManager{
         save();
     }
 
-    public static void reloadHistory(List<Integer> savedId, HttpTaskManager manager){
+    public void reloadHistory(List<Integer> savedId, HttpTaskManager manager){
         List <Task> savedTasks = new ArrayList<>();
         for (int i = 0; i < savedId.size(); i++){
             int id = savedId.get(i);
@@ -168,7 +168,7 @@ public class HttpTaskManager extends InMemoryTaskManager{
             manager.memoryHistoryManager.addTask(savedTask);
         }
     }
-    public static List<Integer> historyFromString(String jsonHistory){
+    public List<Integer> historyFromString(String jsonHistory){
         JsonElement jsonElement = JsonParser.parseString(jsonHistory);
         JsonArray jsonArray = jsonElement.getAsJsonArray();
         String line = "";
@@ -182,7 +182,7 @@ public class HttpTaskManager extends InMemoryTaskManager{
         }
         return history;
     }
-    public static HttpTaskManager load(){
+    public HttpTaskManager load(){
         HttpTaskManager httpTaskManager = new HttpTaskManager(url);
         String jsonTasks = client.load("task");
         httpTaskManager.tasks = gson.fromJson(jsonTasks,

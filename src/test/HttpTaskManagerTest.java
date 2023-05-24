@@ -17,19 +17,22 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HttpTaskManagerTest {
-    
-    public static KVServer server;
-    public static HttpTaskManager manager;
 
     @BeforeAll
     public static void BeforeAll() {
+        KVServer server;
         try {
             server = new KVServer();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         server.start();
-        manager = new HttpTaskManager("http://localhost:8078");
+    }
+
+    @DisplayName("должен сохранять данные на сервер и восстанавливать")
+    @Test
+    void shouldSaveLoad() {
+        HttpTaskManager manager = new HttpTaskManager("http://localhost:8078");
 
         manager.addNewTask(new Task("Task_1", "...", Status.NEW, 1687262400L, 28800L));
         manager.addNewTask(new Task("Task_2", "...", Status.NEW, 1687348800L, 28800L));
@@ -41,14 +44,11 @@ class HttpTaskManagerTest {
         subtasks.add(manager.getSubtask(subtaskId));
         manager.getEpic(epicId).setSubtasks(subtasks);
         manager.getEpic(epicId).countEpicTime();
-    }
 
-    @DisplayName("должен сохранять данные на сервер и восстанавливать")
-    @Test
-    void shouldSaveAndLoad() {
         manager.save();
 
-        HttpTaskManager managerLoad = HttpTaskManager.load();
+        HttpTaskManager managerLoad = new HttpTaskManager();
+        managerLoad = managerLoad.load();
 
         Map<Integer, Task> tasks = manager.mergeAllTasks();
         Map<Integer, Task> tasksLoad = managerLoad.mergeAllTasks();

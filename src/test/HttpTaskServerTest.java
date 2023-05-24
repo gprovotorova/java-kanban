@@ -2,6 +2,7 @@ package test;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import manager.HttpTaskManager;
 import manager.InMemoryTaskManager;
 import manager.Managers;
 import manager.TaskManager;
@@ -19,21 +20,18 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.google.gson.JsonParser.parseString;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static manager.HttpTaskManager.historyFromString;
 import static model.Status.IN_PROGRESS;
 import static model.Status.NEW;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HttpTaskServerTest {
     Gson gson = Managers.getGson();
-    static TaskManager taskManager;
-    static HttpTaskServer taskServer;
+    TaskManager taskManager;
+    HttpTaskServer taskServer;
 
     @BeforeEach
     void BeforeEach() throws IOException {
@@ -176,6 +174,8 @@ class HttpTaskServerTest {
     @DisplayName("возвращать историю просмотра задач с сервера")
     @Test
     void shouldReturnHistory() throws IOException, InterruptedException{
+        HttpTaskManager manager = new HttpTaskManager();
+
         HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create("http://localhost:8080/tasks/history");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
@@ -183,7 +183,7 @@ class HttpTaskServerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
 
-        List <Integer> history = historyFromString(response.body().toString());
+        List <Integer> history = manager.historyFromString(response.body().toString());
         assertNotNull(history, "История пустая.");
         List<Integer> tasksId = List.of(1, 2, 4, 5, 3, 7, 6);
         assertEquals(tasksId.size(), history.size(), "Количество элементов истории не совпадают.");
@@ -385,5 +385,4 @@ class HttpTaskServerTest {
         List<Subtask> subtasks = taskManager.getAllSubtasks();
         assertTrue(subtasks.isEmpty(), "Подзадачи возвращаются после удаления.");
     }
-
 }

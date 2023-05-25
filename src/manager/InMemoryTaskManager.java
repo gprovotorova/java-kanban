@@ -18,9 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
     public Map <Integer, Task> tasks = new HashMap<>();
     public Map <Integer, Epic> epics = new HashMap<>();
     public Map <Integer, Subtask> subtasks = new HashMap<>();
-
     public Map<Instant, Task> prioritizedTasks = new TreeMap(timeComparator);
-
     public InMemoryHistoryManager memoryHistoryManager = Managers.getDefaultHistory();
 
     //Генератор ID

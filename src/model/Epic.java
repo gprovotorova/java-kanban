@@ -7,9 +7,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
-
 public class Epic extends Task {
-    protected List<Subtask> subtasks;
+    private List<Subtask> subtasks;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -49,16 +48,16 @@ public class Epic extends Task {
     public void countEpicTime(){
         List<Subtask> subtasksOfEpic = getSubtasks();
         Long durationAllSubtasks = 0L;
-        if(subtasksOfEpic == null) {
+        if(subtasksOfEpic == null || subtasksOfEpic.isEmpty()) {
             setStartTime(Instant.MIN);
             setDuration(0L);
             setEndTime(getStartTime().plus(10, ChronoUnit.MINUTES));
-            return;
-        } else if(subtasksOfEpic.size() == 1) {
-            setStartTime(subtasksOfEpic.get(0).getStartTime());
-            setDuration(subtasksOfEpic.get(0).getDuration());
-            setEndTime(subtasksOfEpic.get(0).getEndTime());
         } else {
+            if(subtasksOfEpic.size() == 1) {
+                setStartTime(subtasksOfEpic.get(0).getStartTime());
+                setDuration(subtasksOfEpic.get(0).getDuration());
+                setEndTime(subtasksOfEpic.get(0).getEndTime());
+            }
             for (int i = 0; i < subtasksOfEpic.size()-1; i++) {
                 Instant firstSubtaskStartTime = subtasksOfEpic.get(i).getStartTime();
                 Instant secondSubtaskStartTime = subtasksOfEpic.get(i+1).getStartTime();

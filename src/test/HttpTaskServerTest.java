@@ -174,7 +174,7 @@ class HttpTaskServerTest {
     @DisplayName("возвращать историю просмотра задач с сервера")
     @Test
     void shouldReturnHistory() throws IOException, InterruptedException{
-        HttpTaskManager manager = new HttpTaskManager();
+        HttpTaskManager manager = new HttpTaskManager("http://localhost:8078");
 
         HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create("http://localhost:8080/tasks/history");

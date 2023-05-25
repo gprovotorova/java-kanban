@@ -2,6 +2,7 @@ package manager;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import constans.Constans;
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -13,16 +14,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HttpTaskManager extends InMemoryTaskManager{
-    private static final String COMMA = ",";
-    public static KVTaskClient client;
-    private static Gson gson = Managers.getGson();
-    private static String url;
+    public KVTaskClient client;
+    private Gson gson = Managers.getGson();
+    private String url;
     public HttpTaskManager(String url) {
         this.client = new KVTaskClient(url);
         this.url = url;
-    }
-
-    public HttpTaskManager() {
     }
 
     @Override
@@ -173,9 +170,9 @@ public class HttpTaskManager extends InMemoryTaskManager{
         JsonArray jsonArray = jsonElement.getAsJsonArray();
         String line = "";
         for (JsonElement element : jsonArray) {
-            line += element.getAsString() + COMMA;
+            line += element.getAsString() + Constans.COMMA;
         }
-        String [] array = line.split(COMMA);
+        String [] array = line.split(Constans.COMMA);
         List<Integer> history = new ArrayList<>();
         for (int i = 0; i < array.length; i++) {
             history.add(Integer.parseInt(array[i]));

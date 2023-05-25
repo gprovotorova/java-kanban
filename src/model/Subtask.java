@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    protected int epicId;
+    private int epicId;
 
     public Subtask(String name, String description, int epicId, Status subtaskStatus, Long startTimeIncome, Long duration) {
         super(name, description, subtaskStatus, startTimeIncome, duration);

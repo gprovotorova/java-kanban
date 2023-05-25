@@ -47,7 +47,7 @@ class HttpTaskManagerTest {
 
         manager.save();
 
-        HttpTaskManager managerLoad = new HttpTaskManager();
+        HttpTaskManager managerLoad = new HttpTaskManager("http://localhost:8078");
         managerLoad = managerLoad.load();
 
         Map<Integer, Task> tasks = manager.mergeAllTasks();

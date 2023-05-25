@@ -9,19 +9,19 @@ import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import constans.Constans;
 
 /**
  * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
  */
 public class KVServer {
-	public static final int PORT = 8078;
 	private final String apiToken;
 	private final HttpServer server;
 	private final Map<String, String> data = new HashMap<>();
 
 	public KVServer() throws IOException {
 		apiToken = generateApiToken();
-		server = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
+		server = HttpServer.create(new InetSocketAddress("localhost", Constans.PORT_8078), 0);
 		server.createContext("/register", this::register);
 		server.createContext("/save", this::save);
 		server.createContext("/load", this::load);
@@ -101,8 +101,8 @@ public class KVServer {
 	}
 
 	public void start() {
-		System.out.println("Запускаем сервер на порту " + PORT);
-		System.out.println("Открой в браузере http://localhost:" + PORT + "/");
+		System.out.println("Запускаем сервер на порту " + Constans.PORT_8078);
+		System.out.println("Открой в браузере http://localhost:" + Constans.PORT_8078 + "/");
 		System.out.println("API_TOKEN: " + apiToken);
 		server.start();
 	}

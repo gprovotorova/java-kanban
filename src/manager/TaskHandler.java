@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import constans.Constans;
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -12,15 +13,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TaskHandler implements HttpHandler {
-    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private Gson gson;
     private TaskManager taskManager;
 
@@ -151,7 +149,7 @@ public class TaskHandler implements HttpHandler {
     private void handleAddOrUpdateTask(HttpExchange httpExchange, String path) throws IOException{
         String[] pathParts = path.split("/");
         if(pathParts[1].equals("task")){
-            InputStreamReader streamReader = new InputStreamReader(httpExchange.getRequestBody(), DEFAULT_CHARSET);
+            InputStreamReader streamReader = new InputStreamReader(httpExchange.getRequestBody(), Constans.DEFAULT_CHARSET);
             BufferedReader bufferedReader = new BufferedReader(streamReader);
             String body = bufferedReader.lines().collect(Collectors.joining ("\n"));
             try {
@@ -172,7 +170,7 @@ public class TaskHandler implements HttpHandler {
             writeResponse(httpExchange, "Такого эндпоинта не существует", 404);
         }
         if(pathParts[1].equals("subtask")){
-            InputStreamReader streamReader = new InputStreamReader(httpExchange.getRequestBody(), DEFAULT_CHARSET);
+            InputStreamReader streamReader = new InputStreamReader(httpExchange.getRequestBody(), Constans.DEFAULT_CHARSET);
             BufferedReader bufferedReader = new BufferedReader(streamReader);
             String body = bufferedReader.lines().collect(Collectors.joining ("\n"));
             try {
@@ -193,7 +191,7 @@ public class TaskHandler implements HttpHandler {
             writeResponse(httpExchange, "Такого эндпоинта не существует", 404);
         }
         if(pathParts[1].equals("epic")){
-            InputStreamReader streamReader = new InputStreamReader(httpExchange.getRequestBody(), DEFAULT_CHARSET);
+            InputStreamReader streamReader = new InputStreamReader(httpExchange.getRequestBody(), Constans.DEFAULT_CHARSET);
             BufferedReader bufferedReader = new BufferedReader(streamReader);
             String body = bufferedReader.lines().collect(Collectors.joining ("\n"));
             try {
@@ -255,17 +253,14 @@ public class TaskHandler implements HttpHandler {
             List<Task> tasks = taskManager.getAllTasks();
             String jsonTasks = gson.toJson(tasks);
             writeResponse(httpExchange, jsonTasks, 200);
-            return;
         } else if(pathParts[1].equals("subtask")){
             List<Subtask> subtasks = taskManager.getAllSubtasks();
             String jsonSubtasks = gson.toJson(subtasks);
             writeResponse(httpExchange, jsonSubtasks, 200);
-            return;
         } else if(pathParts[1].equals("epic")){
             List<Epic> epics = taskManager.getAllEpics();
             String jsonEpics = gson.toJson(epics);
             writeResponse(httpExchange, jsonEpics, 200);
-            return;
         } else {
             writeResponse(httpExchange, "Такого эндпоинта не существует", 404);
         }
@@ -285,7 +280,7 @@ public class TaskHandler implements HttpHandler {
         if(responseString.isBlank()) {
             exchange.sendResponseHeaders(responseCode, 0);
         } else {
-            byte[] bytes = responseString.getBytes(DEFAULT_CHARSET);
+            byte[] bytes = responseString.getBytes(Constans.DEFAULT_CHARSET);
             exchange.sendResponseHeaders(responseCode, bytes.length);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(bytes);

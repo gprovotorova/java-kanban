@@ -21,9 +21,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         this.file = file;
     }
 
-    public FileBackedTasksManager() {
-    }
-
     public FileBackedTasksManager getFileManager(){
         return FileBackedTasksManager.this;
     }

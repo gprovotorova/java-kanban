@@ -1,5 +1,6 @@
 package utils;
 
+import constans.Constans;
 import exceptions.ManagerSaveException;
 import manager.*;
 import model.Epic;
@@ -14,9 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 public class CSVutils {
-
-    private static final String COMMA = ", ";
-    private static final String CONST = "\n";
     private static final String HEADLINE = "id,type,name,status,description,epic,startTime,duration,endTime\n";
 
     public static void save(FileBackedTasksManager fileManager) {
@@ -25,9 +23,9 @@ public class CSVutils {
             Map<Integer, Task> savedTasks = fileManager.mergeAllTasks();
             for (Integer key : savedTasks.keySet()) {
                 Task task = savedTasks.get(key);
-                fileWriter.write(CSVutils.toString(task, fileManager) + CONST);
+                fileWriter.write(CSVutils.toString(task, fileManager) + Constans.CONST);
             }
-            fileWriter.write(CONST);
+            fileWriter.write(Constans.CONST);
             fileWriter.write(CSVutils.historyToString(fileManager.memoryHistoryManager));
         } catch (IOException e) {
             throw new ManagerSaveException("Произошла ошибка во время записи файла.");
@@ -65,7 +63,7 @@ public class CSVutils {
     }
 
     public static Task fromString(String line, FileBackedTasksManager manager){
-        String [] array = line.split(COMMA);
+        String [] array = line.split(Constans.COMMA_SPACE);
         String taskType = array[1];
         switch(taskType){
             case "TASK":
@@ -77,7 +75,6 @@ public class CSVutils {
                     manager.changeId(taskId, newId, task);
                 }
                 return task;
-
             case "SUBTASK":
                 int subtaskId = manager.addNewSubtask(new Subtask(array[2], array[4], Integer.parseInt(array[5]), Status.valueOf(array[3]), Long.parseLong(String.valueOf(Instant.parse(array[6]).toEpochMilli()/1000)), Long.parseLong(array[7])));
                 int epicId = Integer.parseInt(array[5]);
@@ -116,7 +113,7 @@ public class CSVutils {
     }
 
     public static List<Integer> historyFromString(String line){
-        String [] array = line.split(COMMA);
+        String [] array = line.split(Constans.COMMA_SPACE);
         String a = array[0];
         List<Integer> history = new ArrayList<>();
         for (int i = 0; i < array.length; i++) {

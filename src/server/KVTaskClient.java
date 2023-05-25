@@ -15,7 +15,6 @@ import java.net.http.HttpResponse;
 public class KVTaskClient {
     private String url;
     private String token;
-    Gson gson = Managers.getGson();
 
     public KVTaskClient(String url) {
         this.url = url;

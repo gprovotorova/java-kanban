@@ -28,22 +28,24 @@ public class HttpTaskServer {
     public HttpTaskServer(TaskManager taskManager) throws IOException {
         this.taskManager = taskManager;
         gson = Managers.getGson();
-        taskServer = HttpServer.create(new InetSocketAddress("localhost", Constans.PORT_8080), 0);
+        taskServer = HttpServer.create(new InetSocketAddress("localhost", Constans.PORT_8075), 0);
         taskServer.createContext("/tasks/", new TaskHandler(taskManager));
     }
 
     public void start() {
-        System.out.println("Запускаем сервер на порту " + Constans.PORT_8080);
-        System.out.println("Открой в браузере http://localhost:" + Constans.PORT_8080 + "/tasks/");
+        System.out.println("Запускаем сервер на порту " + Constans.PORT_8075);
+        System.out.println("Открой в браузере http://localhost:" + Constans.PORT_8075 + "/tasks/");
         taskServer.start();
     }
 
     public void stop(){
         taskServer.stop(0);
-        System.out.println("Остановили сервер на порту " + Constans.PORT_8080);
+        System.out.println("Остановили сервер на порту " + Constans.PORT_8075);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        KVServer kvServer = new KVServer();
+        kvServer.start();
         HttpTaskManager httpTaskManager = new HttpTaskManager("http://localhost:8078");
         httpTaskManager.addNewTask(new Task("Task_1", "...", Status.NEW, 1682812800L, 180000L));
 
@@ -66,6 +68,8 @@ public class HttpTaskServer {
         System.out.println("2 - " + httpTaskManager2.getHistory().stream()
                 .map(Task::getId)
                 .collect(Collectors.toList()));
+
+        kvServer.stop();
     }
 }
 

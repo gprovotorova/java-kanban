@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>{
 
     private static File file = new File("check.csv");
-    FileBackedTasksManager fileTaskManager;
+    private FileBackedTasksManager fileTaskManager;
 
     @BeforeEach
     public void BeforeEach(){

@@ -29,9 +29,9 @@ import static model.Status.NEW;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HttpTaskServerTest {
-    Gson gson = Managers.getGson();
-    TaskManager taskManager;
-    HttpTaskServer taskServer;
+    private Gson gson = Managers.getGson();
+    private TaskManager taskManager;
+    private HttpTaskServer taskServer;
 
     @BeforeEach
     void BeforeEach() throws IOException {
@@ -71,7 +71,7 @@ class HttpTaskServerTest {
     @Test
     void shouldReturnTasks() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/task");
+        URI url = URI.create("http://localhost:8075/tasks/task");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -88,7 +88,7 @@ class HttpTaskServerTest {
     @Test
     void shouldReturnSubtasks() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/subtask");
+        URI url = URI.create("http://localhost:8075/tasks/subtask");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -105,7 +105,7 @@ class HttpTaskServerTest {
     @Test
     void shouldReturnEpics() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/epic");
+        URI url = URI.create("http://localhost:8075/tasks/epic");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -122,7 +122,7 @@ class HttpTaskServerTest {
     @Test
     void shouldReturnTaskById() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/task?id=1");
+        URI url = URI.create("http://localhost:8075/tasks/task?id=1");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -139,7 +139,7 @@ class HttpTaskServerTest {
     @Test
     void shouldReturnSubtaskById() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/subtask?id=7");
+        URI url = URI.create("http://localhost:8075/tasks/subtask?id=7");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -156,7 +156,7 @@ class HttpTaskServerTest {
     @Test
     void shouldReturnEpicById() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/epic?id=6");
+        URI url = URI.create("http://localhost:8075/tasks/epic?id=6");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -177,7 +177,7 @@ class HttpTaskServerTest {
         HttpTaskManager manager = new HttpTaskManager("http://localhost:8078");
 
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/history");
+        URI url = URI.create("http://localhost:8075/tasks/history");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -196,7 +196,7 @@ class HttpTaskServerTest {
     @Test
     void shouldReturnPrioritizedTasks() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/");
+        URI url = URI.create("http://localhost:8075/tasks/");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -221,7 +221,7 @@ class HttpTaskServerTest {
         String jsonTask = gson.toJson(task);
 
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/task");
+        URI url = URI.create("http://localhost:8075/tasks/task");
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(jsonTask)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
@@ -243,7 +243,7 @@ class HttpTaskServerTest {
         String jsonTask = gson.toJson(epic);
 
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/epic");
+        URI url = URI.create("http://localhost:8075/tasks/epic");
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(jsonTask)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
@@ -265,7 +265,7 @@ class HttpTaskServerTest {
         Subtask subtask = new Subtask("Subtask_3.3", "...", 3, IN_PROGRESS, 1690977600L, 43200L);
         String jsonSubtask = gson.toJson(subtask);
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/subtask");
+        URI url = URI.create("http://localhost:8075/tasks/subtask");
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(jsonSubtask)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
@@ -283,7 +283,7 @@ class HttpTaskServerTest {
     @Test
     void shouldNotReturnTaskById() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/task?id=1");
+        URI url = URI.create("http://localhost:8075/tasks/task?id=1");
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
@@ -299,7 +299,7 @@ class HttpTaskServerTest {
     @Test
     void shouldNotReturnEpicById() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/epic?id=3");
+        URI url = URI.create("http://localhost:8075/tasks/epic?id=3");
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -315,7 +315,7 @@ class HttpTaskServerTest {
     @Test
     void shouldNotReturnSubtaskById() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/subtask?id=7");
+        URI url = URI.create("http://localhost:8075/tasks/subtask?id=7");
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -331,7 +331,7 @@ class HttpTaskServerTest {
     @Test
     void shouldReturnAllSubtasksOfEpic() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/subtask/epic?id=3");
+        URI url = URI.create("http://localhost:8075/tasks/subtask/epic?id=3");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -348,7 +348,7 @@ class HttpTaskServerTest {
     @Test
     void shouldNotReturnTasks() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/task");
+        URI url = URI.create("http://localhost:8075/tasks/task");
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -362,7 +362,7 @@ class HttpTaskServerTest {
     @Test
     void shouldNotReturnEpics() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/epic");
+        URI url = URI.create("http://localhost:8075/tasks/epic");
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -376,7 +376,7 @@ class HttpTaskServerTest {
     @Test
     void shouldNotReturnSubtasks() throws IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/subtask");
+        URI url = URI.create("http://localhost:8075/tasks/subtask");
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

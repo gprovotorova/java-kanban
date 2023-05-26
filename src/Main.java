@@ -13,7 +13,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        new KVServer().start();
+        KVServer server = new KVServer();
+        server.start();
         TaskManager taskManager = Managers.getDefaultTaskManager();
 
         //Создание задачи 1
@@ -113,5 +114,7 @@ public class Main {
 
         //Вывод задач в порядке приоритета
         System.out.println("Priority history: " + taskManager.getPrioritizedTasks());
+
+        server.stop();
     }
 }

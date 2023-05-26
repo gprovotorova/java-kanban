@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest <T extends TaskManager>{
 
-    T taskManager;
+    private T taskManager;
 
     @DisplayName("создавать задачу и возвращать ее id")
     @Test

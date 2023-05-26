@@ -107,6 +107,11 @@ public class KVServer {
 		server.start();
 	}
 
+	public void stop() {
+		server.stop(0);
+		System.out.println("Остановили сервер на порту " + Constans.PORT_8078);
+	}
+
 	private String generateApiToken() {
 		return "" + System.currentTimeMillis();
 	}
@@ -125,9 +130,5 @@ public class KVServer {
 		h.getResponseHeaders().add("Content-Type", "application/json");
 		h.sendResponseHeaders(200, resp.length);
 		h.getResponseBody().write(resp);
-	}
-
-	public static void main(String[] args) throws IOException {
-		new KVServer().start();
 	}
 }
